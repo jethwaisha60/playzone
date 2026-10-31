@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us | PlayZone Arcade</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%230a0d14'/><path d='M9 13h14a5 5 0 0 1 5 5v2a3 3 0 0 1-5 2l-3-4h-8l-3 4a3 3 0 0 1-5-2v-2a5 5 0 0 1 5-5z' fill='%23121724' stroke='%2300f0ff' stroke-width='1.5'/><circle cx='21' cy='17' r='1' fill='%23ec4899'/><circle cx='24' cy='17' r='1' fill='%23a855f7'/><path d='M8 17h4m-2-2v4' stroke='%2300f0ff' stroke-width='1.2' stroke-linecap='round'/></svg>">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <link rel="stylesheet" href="css/pages.css">
+</head>
+<body class="static-page">
+
+  <!-- Ambient Light Orbs -->
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
+
+  <!-- Sticky Navigation Bar -->
+  <header class="page-nav-header">
+    <div class="page-nav-container">
+      <div class="nav-left">
+        <a href="index.html" class="home-btn" title="Return to Arcade Lobby">
+          <span class="home-arrow">←</span>
+          <span>Back to Home</span>
+        </a>
+        <a href="index.html" class="brand-logo">
+          <span class="brand-icon">🎮</span>
+          <span class="brand-name">Play<span class="gradient-text">Zone</span></span>
+        </a>
+      </div>
+
+      <div class="nav-actions">
+        <a href="contact.html" class="action-btn-sm">
+          <span>✉️</span> Contact Us
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="page-main">
+    <div class="page-hero">
+      <div class="page-badge">🕹️ Welcome to the Arcade</div>
+      <h1 class="page-title">About <span class="gradient-text">PlayZone</span></h1>
+      <p class="page-subtitle">
+        Your lightweight, instant-play web gaming destination. Built from scratch with pure web technologies to bring modern arcade thrills directly to your browser.
+      </p>
+    </div>
+
+    <!-- Mission & What is PlayZone -->
+    <article class="content-card">
+      <section class="content-section">
+        <h2><span>⚡</span> What is PlayZone?</h2>
+        <p>
+          <strong>PlayZone</strong> is an independent, modern web arcade crafted for players who want quick, engaging, and fun mini-games without friction. In an era where modern gaming often demands gigabytes of downloads, complex launchers, intrusive sign-up forms, and aggressive monetization, PlayZone does the opposite: <em>click, play, and enjoy instantly</em>.
+        </p>
+        <p>
+          Whether you have a quick 5-minute coffee break or want to challenge your reflexes for an hour, PlayZone delivers fast-loading, responsive gameplay on any desktop, tablet, or smartphone browser.
+        </p>
+      </section>
+
+      <!-- Key Pillars -->
+      <section class="content-section">
+        <h2><span>🎯</span> Our Core Philosophy</h2>
+        <div class="pillars-row">
+          <div class="pillar-item">
+            <div class="pillar-icon">⚡</div>
+            <h3 class="pillar-title">100% Free & Instant</h3>
+            <p class="pillar-desc">No accounts, no paywalls, and no downloads. Open the website and start playing within seconds.</p>
+          </div>
+          <div class="pillar-item">
+            <div class="pillar-icon">📱</div>
+            <h3 class="pillar-title">Mobile & Desktop Ready</h3>
+            <p class="pillar-desc">Touch-friendly virtual controls, swipe gestures, and keyboard hotkeys tailored for every screen size.</p>
+          </div>
+          <div class="pillar-item">
+            <div class="pillar-icon">🔒</div>
+            <h3 class="pillar-title">Privacy First</h3>
+            <p class="pillar-desc">All high scores and records are stored locally on your device via HTML5 LocalStorage. Zero user tracking.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- The 4 Games Showcase -->
+      <section class="content-section">
+        <h2><span>🎮</span> Our Mini-Game Collection</h2>
+        <p>
+          Every game in PlayZone has been handcrafted with clean animations, responsive mechanics, and built-in synthesized retro sound effects powered by the Web Audio API:
+        </p>
+
+        <div class="games-showcase-grid">
+          <!-- Game 1: Neon Snake -->
+          <div class="game-showcase-card">
+            <div class="showcase-icon">🐍</div>
+            <span class="showcase-badge">Arcade Classic</span>
+            <h3 class="showcase-title">Neon Snake</h3>
+            <p class="showcase-desc">
+              A high-octane tribute to the classic arcade legend. Slither through a glowing cyber-grid, collect neon orbs, scale your speed, and avoid wall and self-collisions.
+            </p>
+            <a href="games/snake/index.html" class="showcase-btn">Play Neon Snake ➔</a>
+          </div>
+
+          <!-- Game 2: Memory Flip -->
+          <div class="game-showcase-card">
+            <div class="showcase-icon">🃏</div>
+            <span class="showcase-badge">Brain Puzzle</span>
+            <h3 class="showcase-title">Memory Flip</h3>
+            <p class="showcase-desc">
+              Test and sharpen your visual recall. Features smooth 3D card flips across three difficulty tiers (Easy 8-card, Medium 12-card, Hard 16-card), complete with move counters and speed timers.
+            </p>
+            <a href="games/memory-match/index.html" class="showcase-btn">Play Memory Flip ➔</a>
+          </div>
+
+          <!-- Game 3: Tic-Tac-Toe AI -->
+          <div class="game-showcase-card">
+            <div class="showcase-icon">⭕</div>
+            <span class="showcase-badge">Strategy & AI</span>
+            <h3 class="showcase-title">Tic-Tac-Toe AI</h3>
+            <p class="showcase-desc">
+              The timeless Xs and Os showdown. Challenge a friend in local two-player mode or test your wits against computer opponents across Easy, Medium, and an unbeatable Minimax algorithm.
+            </p>
+            <a href="games/tic-tac-toe/index.html" class="showcase-btn">Play Tic-Tac-Toe AI ➔</a>
+          </div>
+
+          <!-- Game 4: Reflex Speed Test -->
+          <div class="game-showcase-card">
+            <div class="showcase-icon">⚡</div>
+            <span class="showcase-badge">Reflex & Speed</span>
+            <h3 class="showcase-title">Reflex Speed Test</h3>
+            <p class="showcase-desc">
+              Measure your reaction speed down to the exact millisecond using high-precision browser timers. Features quick single tests, false-start detection, and a 5-round challenge mode.
+            </p>
+            <a href="games/reaction-timer/index.html" class="showcase-btn">Play Reflex Speed Test ➔</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Technology Behind PlayZone -->
+      <section class="content-section">
+        <h2><span>🛠️</span> Built with Modern Web Standards</h2>
+        <p>
+          PlayZone is intentionally built with pure, unbloated web technologies:
+        </p>
+        <ul>
+          <li><strong>Semantic HTML5:</strong> Fast parsing, clear document structure, and accessibility across assistive technologies.</li>
+          <li><strong>Modern CSS3:</strong> Custom design tokens, glassmorphism filters, responsive flexbox and CSS grids, and smooth hardware-accelerated animations.</li>
+          <li><strong>Vanilla JavaScript (ES6+):</strong> Zero heavy frameworks, zero runtime bloat, and instantaneous execution.</li>
+          <li><strong>Procedural Web Audio API:</strong> Synthesized real-time retro arcade tones, beeps, and win fanfares that never fail due to missing audio files.</li>
+        </ul>
+      </section>
+
+      <!-- Feedback Callout -->
+      <div class="callout-box">
+        <div class="callout-title">Have ideas or feedback?</div>
+        <p>
+          PlayZone is continuously evolving. If you have suggestions for new mini-games or improvements, we'd love to hear from you on our <a href="contact.html" style="color: var(--neon-cyan); text-decoration: underline;">Contact Page</a>.
+        </p>
+      </div>
+    </article>
+  </main>
+
+  <!-- Standard Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <div class="brand-logo">
+          <span class="brand-icon">🎮</span>
+          <span class="brand-name">Play<span class="gradient-text">Zone</span></span>
+        </div>
+        <p>A lightweight, modern web gaming experience built with pure web technologies.</p>
+      </div>
+
+      <nav class="footer-links-grid" aria-label="Footer Navigation">
+        <a href="index.html" class="footer-link">Home</a>
+        <a href="about.html" class="footer-link active">About Us</a>
+        <a href="contact.html" class="footer-link">Contact Us</a>
+        <a href="privacy.html" class="footer-link">Privacy Policy</a>
+        <a href="terms.html" class="footer-link">Terms & Conditions</a>
+      </nav>
+
+      <div class="footer-meta">
+        <p class="copyright">&copy; 2026 PlayZone Arcade. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
