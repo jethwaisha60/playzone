@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PlayZone | Ultimate Web Arcade</title>
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%230a0d14'/><path d='M9 13h14a5 5 0 0 1 5 5v2a3 3 0 0 1-5 2l-3-4h-8l-3 4a3 3 0 0 1-5-2v-2a5 5 0 0 1 5-5z' fill='%23121724' stroke='%2300f0ff' stroke-width='1.5'/><circle cx='21' cy='17' r='1' fill='%23ec4899'/><circle cx='24' cy='17' r='1' fill='%23a855f7'/><path d='M8 17h4m-2-2v4' stroke='%2300f0ff' stroke-width='1.2' stroke-linecap='round'/></svg>">
+  
+  <!-- Modern Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+  <!-- Background decorative light orbs -->
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
+
+  <!-- Main Navigation Bar -->
+  <header class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="brand-logo">
+        <span class="brand-icon">🎮</span>
+        <span class="brand-name">Play<span class="gradient-text">Zone</span></span>
+      </a>
+
+      <!-- Search Bar -->
+      <div class="search-box">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="gameSearch" placeholder="Search mini-games..." aria-label="Search mini-games">
+        <button id="clearSearch" class="clear-btn" aria-label="Clear search" title="Clear">✕</button>
+      </div>
+
+      <!-- Action Controls -->
+      <div class="nav-actions">
+        <!-- Sound Toggle Button -->
+        <button id="soundToggle" class="icon-btn" aria-label="Toggle sound" title="Toggle Sound">
+          <span id="soundIcon">🔊</span>
+          <span class="btn-label">Sound On</span>
+        </button>
+
+        <!-- Quick Random Play Button -->
+        <button id="randomGameBtn" class="action-btn-sm" title="Play a random game">
+          <span>🎲</span> Surprise Me
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="hero-content">
+      <div class="hero-badge">⚡ Instant Play • 100% Free • No Downloads</div>
+      <h1 class="hero-title">Level Up Your <span class="gradient-text">Break Time</span></h1>
+      <p class="hero-subtitle">
+        Jump straight into modern arcade games, brain-teasing puzzles, and lightning-fast reflex tests. Designed for both desktop and mobile devices.
+      </p>
+
+      <!-- Quick Platform Stats -->
+      <div class="hero-stats">
+        <div class="stat-item">
+          <span class="stat-number" id="totalGamesCount">4</span>
+          <span class="stat-label">Mini Games</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-number">0s</span>
+          <span class="stat-label">Load Time</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-number">💾</span>
+          <span class="stat-label">Auto-Save Scores</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Arcade Game Browser Section -->
+  <main class="arcade-main">
+    <div class="section-header">
+      <div>
+        <h2 class="section-title">Browse Arcade</h2>
+        <p class="section-desc">Pick your favorite game and test your high score!</p>
+      </div>
+
+      <!-- Category Filter Tabs -->
+      <div class="category-filters" id="categoryFilters">
+        <button class="filter-tab active" data-category="all">All Games</button>
+        <button class="filter-tab" data-category="arcade">Arcade</button>
+        <button class="filter-tab" data-category="puzzle">Puzzle</button>
+        <button class="filter-tab" data-category="reflex">Reflex & Speed</button>
+      </div>
+    </div>
+
+    <!-- Dynamic Game Cards Grid -->
+    <div class="games-grid" id="gamesGrid">
+      <!-- JavaScript will dynamically render cards here -->
+    </div>
+
+    <!-- Empty State (Shown if search returns nothing) -->
+    <div class="empty-state hidden" id="emptyState">
+      <span class="empty-icon">🕹️</span>
+      <h3>No games found</h3>
+      <p>Try searching for a different keyword or reset the category filter.</p>
+      <button id="resetFilterBtn" class="action-btn-sm">Reset Filters</button>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <div class="brand-logo">
+          <span class="brand-icon">🎮</span>
+          <span class="brand-name">Play<span class="gradient-text">Zone</span></span>
+        </div>
+        <p>A lightweight, modern web gaming experience built with pure web technologies.</p>
+      </div>
+
+      <div class="footer-meta">
+        <div class="tips-box">
+          <span class="tip-icon">💡</span>
+          <span>Tip: Your high scores are stored locally in your browser.</span>
+        </div>
+        <p class="copyright">&copy; 2026 PlayZone Arcade. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Core Scripts -->
+  <script src="js/audio.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

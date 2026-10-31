@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Memory Flip | PlayZone Arcade</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%230a0d14'/><path d='M9 13h14a5 5 0 0 1 5 5v2a3 3 0 0 1-5 2l-3-4h-8l-3 4a3 3 0 0 1-5-2v-2a5 5 0 0 1 5-5z' fill='%23121724' stroke='%2300f0ff' stroke-width='1.5'/><circle cx='21' cy='17' r='1' fill='%23ec4899'/><circle cx='24' cy='17' r='1' fill='%23a855f7'/><path d='M8 17h4m-2-2v4' stroke='%2300f0ff' stroke-width='1.2' stroke-linecap='round'/></svg>">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+
+  <!-- Core Theme & Game Styles -->
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="memory.css">
+</head>
+<body class="memory-page">
+
+  <!-- Background decorative light orbs -->
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
+
+  <!-- Top Navigation Header -->
+  <header class="game-header">
+    <div class="game-nav-container">
+      <a href="../../index.html" class="back-link" id="backToHome">
+        <span class="back-arrow">←</span>
+        <span>Back to PlayZone</span>
+      </a>
+
+      <div class="game-title-wrap">
+        <span class="game-icon">🃏</span>
+        <h1 class="game-heading">Memory <span class="gradient-text">Flip</span></h1>
+      </div>
+
+      <!-- In-game Sound Toggle -->
+      <button id="soundToggle" class="icon-btn" aria-label="Toggle sound" title="Toggle Sound">
+        <span id="soundIcon">🔊</span>
+        <span class="btn-label">Sound</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Game Stage -->
+  <main class="game-wrapper">
+    <!-- Difficulty Selector Tabs -->
+    <div class="difficulty-bar">
+      <span class="diff-label">Difficulty:</span>
+      <div class="diff-tabs" id="difficultyTabs">
+        <button class="diff-tab active" data-difficulty="easy">Easy (8 Cards)</button>
+        <button class="diff-tab" data-difficulty="medium">Medium (12 Cards)</button>
+        <button class="diff-tab" data-difficulty="hard">Hard (16 Cards)</button>
+      </div>
+    </div>
+
+    <!-- Score & Stats Bar -->
+    <div class="scoreboard-card">
+      <div class="score-box">
+        <span class="score-label">Time</span>
+        <span class="score-number" id="timerDisplay">00:00</span>
+      </div>
+
+      <div class="score-divider"></div>
+
+      <div class="score-box">
+        <span class="score-label">Moves</span>
+        <span class="score-number" id="movesDisplay">0</span>
+      </div>
+
+      <div class="score-divider"></div>
+
+      <div class="score-box">
+        <span class="score-label">Matches</span>
+        <span class="score-number" id="matchesDisplay">0 / 4</span>
+      </div>
+
+      <div class="score-divider"></div>
+
+      <div class="score-box best-score-box">
+        <span class="score-label">Best Time</span>
+        <span class="score-number gold" id="bestTimeDisplay">--</span>
+      </div>
+    </div>
+
+    <!-- Cards Grid Stage -->
+    <div class="cards-stage">
+      <div class="memory-grid grid-easy" id="memoryGrid">
+        <!-- Cards dynamically injected by memory.js -->
+      </div>
+    </div>
+
+    <!-- Action Buttons Bar -->
+    <div class="game-controls-bar">
+      <button id="restartBtn" class="control-btn" title="Reset current game board">
+        <span>🔄</span>
+        <span>Restart</span>
+      </button>
+      <button id="newGameBtn" class="control-btn primary-control" title="Start a fresh shuffled game">
+        <span>✨</span>
+        <span>New Shuffle</span>
+      </button>
+    </div>
+
+    <!-- Instructions / Guide -->
+    <footer class="game-guide-box">
+      <div class="guide-item">
+        <span class="guide-tag">How To Play</span>
+        <span>Tap or click cards to flip them. Find all matching pairs in the fewest moves and fastest time!</span>
+      </div>
+    </footer>
+  </main>
+
+  <!-- Victory Overlay Modal -->
+  <div class="win-modal-backdrop hidden" id="winModal">
+    <div class="win-modal-card">
+      <div class="win-icon">🏆</div>
+      <h2 class="win-title">Puzzle Cleared!</h2>
+      <p class="win-subtitle" id="winSubtitle">Outstanding visual memory!</p>
+
+      <!-- Rating Stars -->
+      <div class="star-rating" id="starRating">
+        <span class="star filled">★</span>
+        <span class="star filled">★</span>
+        <span class="star filled">★</span>
+      </div>
+
+      <!-- Final Performance Stats -->
+      <div class="win-stats-grid">
+        <div class="win-stat-box">
+          <span class="win-stat-label">Time Taken</span>
+          <strong class="win-stat-val" id="finalTimeVal">00:15</strong>
+        </div>
+        <div class="win-stat-box">
+          <span class="win-stat-label">Total Moves</span>
+          <strong class="win-stat-val" id="finalMovesVal">12</strong>
+        </div>
+        <div class="win-stat-box">
+          <span class="win-stat-label">Best Record</span>
+          <strong class="win-stat-val gold" id="finalBestVal">15s</strong>
+        </div>
+      </div>
+
+      <!-- New Record Alert Badge -->
+      <div id="newBestBadge" class="new-record-badge hidden">
+        ⚡ New Best Time!
+      </div>
+
+      <!-- Modal Action Buttons -->
+      <div class="modal-actions">
+        <button id="playAgainBtn" class="game-action-btn start-pulse">
+          <span>🔄</span> Play Again
+        </button>
+        <button id="nextDiffBtn" class="game-action-btn secondary-btn">
+          <span>⚡</span> Next Difficulty
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sound System & Game Script -->
+  <script src="../../js/audio.js"></script>
+  <script src="memory.js"></script>
+</body>
+</html>

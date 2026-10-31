@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Neon Snake | PlayZone Arcade</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%230a0d14'/><path d='M9 13h14a5 5 0 0 1 5 5v2a3 3 0 0 1-5 2l-3-4h-8l-3 4a3 3 0 0 1-5-2v-2a5 5 0 0 1 5-5z' fill='%23121724' stroke='%2300f0ff' stroke-width='1.5'/><circle cx='21' cy='17' r='1' fill='%23ec4899'/><circle cx='24' cy='17' r='1' fill='%23a855f7'/><path d='M8 17h4m-2-2v4' stroke='%2300f0ff' stroke-width='1.2' stroke-linecap='round'/></svg>">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+
+  <!-- Core Theme & Game Styles -->
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="snake.css">
+</head>
+<body class="snake-page">
+
+  <!-- Background decorative light orbs -->
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
+
+  <!-- Top Navigation / Header -->
+  <header class="game-header">
+    <div class="game-nav-container">
+      <a href="../../index.html" class="back-link" id="backToHome">
+        <span class="back-arrow">←</span>
+        <span>Back to PlayZone</span>
+      </a>
+
+      <div class="game-title-wrap">
+        <span class="game-icon">🐍</span>
+        <h1 class="game-heading">Neon <span class="gradient-text">Snake</span></h1>
+      </div>
+
+      <!-- In-game Sound Toggle -->
+      <button id="soundToggle" class="icon-btn" aria-label="Toggle sound" title="Toggle Sound">
+        <span id="soundIcon">🔊</span>
+        <span class="btn-label">Sound</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Game Stage -->
+  <main class="game-wrapper">
+    <!-- Score & Stats Bar -->
+    <div class="scoreboard-card">
+      <div class="score-box current-score-box">
+        <span class="score-label">Score</span>
+        <span class="score-number" id="currentScore">0</span>
+      </div>
+
+      <div class="score-divider"></div>
+
+      <div class="score-box speed-box">
+        <span class="score-label">Speed</span>
+        <span class="score-number" id="speedLevel">1x</span>
+      </div>
+
+      <div class="score-divider"></div>
+
+      <div class="score-box best-score-box">
+        <span class="score-label">Best Record</span>
+        <span class="score-number gold" id="bestScore">0</span>
+      </div>
+    </div>
+
+    <!-- Canvas Frame with Interactive Overlays -->
+    <div class="canvas-container" id="canvasContainer">
+      <canvas id="gameCanvas" width="400" height="400"></canvas>
+
+      <!-- Overlay: Start Screen -->
+      <div class="canvas-overlay" id="startOverlay">
+        <div class="overlay-content">
+          <div class="overlay-icon">🐍</div>
+          <h2 class="overlay-title">Ready to Slither?</h2>
+          <p class="overlay-desc">Collect neon cyber-orbs and beat your highest record.</p>
+          <button id="startBtn" class="game-action-btn start-pulse">
+            <span>▶</span> Start Game
+          </button>
+          <p class="overlay-hint">or press <kbd>Space</kbd> / <kbd>Enter</kbd></p>
+        </div>
+      </div>
+
+      <!-- Overlay: Pause Screen -->
+      <div class="canvas-overlay hidden" id="pauseOverlay">
+        <div class="overlay-content">
+          <div class="overlay-icon">⏸️</div>
+          <h2 class="overlay-title">Game Paused</h2>
+          <p class="overlay-desc">Catch your breath, the cyber-grid is waiting.</p>
+          <button id="resumeBtn" class="game-action-btn">
+            <span>▶</span> Resume
+          </button>
+          <button id="restartFromPauseBtn" class="game-action-btn secondary-btn">
+            <span>🔄</span> Restart
+          </button>
+        </div>
+      </div>
+
+      <!-- Overlay: Game Over Screen -->
+      <div class="canvas-overlay hidden" id="gameOverOverlay">
+        <div class="overlay-content">
+          <div class="overlay-icon" id="gameOverIcon">💀</div>
+          <h2 class="overlay-title" id="gameOverTitle">Game Over!</h2>
+          
+          <div class="game-over-stats">
+            <div class="go-stat">
+              <span>Final Score</span>
+              <strong id="finalScoreVal">0</strong>
+            </div>
+            <div class="go-stat">
+              <span>Best Score</span>
+              <strong id="finalBestVal" class="gold">0</strong>
+            </div>
+          </div>
+
+          <div id="newBestBadge" class="new-record-badge hidden">
+            🏆 New High Score!
+          </div>
+
+          <button id="retryBtn" class="game-action-btn start-pulse">
+            <span>🔄</span> Play Again
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Action Control Bar -->
+    <div class="game-controls-bar">
+      <button id="pauseToggleBtn" class="control-btn" disabled title="Pause or Resume game">
+        <span id="pauseBtnIcon">⏸️</span>
+        <span id="pauseBtnLabel">Pause</span>
+      </button>
+      <button id="restartBtn" class="control-btn" title="Restart game">
+        <span>🔄</span>
+        <span>Restart</span>
+      </button>
+    </div>
+
+    <!-- Mobile Virtual Touch Controls (D-Pad) -->
+    <div class="touch-controls-section" id="touchControls">
+      <div class="dpad-container">
+        <button class="dpad-btn dpad-up" id="dpadUp" aria-label="Up">▲</button>
+        <div class="dpad-middle-row">
+          <button class="dpad-btn dpad-left" id="dpadLeft" aria-label="Left">◀</button>
+          <div class="dpad-center">●</div>
+          <button class="dpad-btn dpad-right" id="dpadRight" aria-label="Right">▶</button>
+        </div>
+        <button class="dpad-btn dpad-down" id="dpadDown" aria-label="Down">▼</button>
+      </div>
+    </div>
+
+    <!-- Instructions / Shortcuts Guide -->
+    <footer class="game-guide-box">
+      <div class="guide-item">
+        <span class="guide-tag">Desktop</span>
+        <span>Use <strong>Arrow Keys</strong> or <strong>W A S D</strong> to move. <strong>Space</strong> to pause.</span>
+      </div>
+      <div class="guide-item">
+        <span class="guide-tag">Mobile</span>
+        <span>Use the <strong>Virtual D-Pad</strong> below or <strong>swipe</strong> directly on the grid.</span>
+      </div>
+    </footer>
+  </main>
+
+  <!-- Sound System & Game Script -->
+  <script src="../../js/audio.js"></script>
+  <script src="snake.js"></script>
+</body>
+</html>

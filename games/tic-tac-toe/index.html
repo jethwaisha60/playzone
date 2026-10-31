@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tic-Tac-Toe AI | PlayZone Arcade</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%230a0d14'/><path d='M9 13h14a5 5 0 0 1 5 5v2a3 3 0 0 1-5 2l-3-4h-8l-3 4a3 3 0 0 1-5-2v-2a5 5 0 0 1 5-5z' fill='%23121724' stroke='%2300f0ff' stroke-width='1.5'/><circle cx='21' cy='17' r='1' fill='%23ec4899'/><circle cx='24' cy='17' r='1' fill='%23a855f7'/><path d='M8 17h4m-2-2v4' stroke='%2300f0ff' stroke-width='1.2' stroke-linecap='round'/></svg>">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+
+  <!-- Core Theme & Game Styles -->
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="tictactoe.css">
+</head>
+<body class="ttt-page">
+
+  <!-- Background decorative light orbs -->
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
+
+  <!-- Top Navigation Header -->
+  <header class="game-header">
+    <div class="game-nav-container">
+      <a href="../../index.html" class="back-link" id="backToHome">
+        <span class="back-arrow">←</span>
+        <span>Back to PlayZone</span>
+      </a>
+
+      <div class="game-title-wrap">
+        <span class="game-icon">⭕</span>
+        <h1 class="game-heading">Tic-Tac-Toe <span class="gradient-text">AI</span></h1>
+      </div>
+
+      <!-- In-game Sound Toggle -->
+      <button id="soundToggle" class="icon-btn" aria-label="Toggle sound" title="Toggle Sound">
+        <span id="soundIcon">🔊</span>
+        <span class="btn-label">Sound</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Game Stage -->
+  <main class="game-wrapper">
+
+    <!-- Game Settings Bar (Mode, Symbol, Difficulty) -->
+    <div class="settings-card">
+      <!-- Mode Toggle -->
+      <div class="settings-row">
+        <span class="setting-label">Mode:</span>
+        <div class="toggle-group" id="modeSelector">
+          <button class="toggle-btn active" data-mode="ai">🤖 vs Computer</button>
+          <button class="toggle-btn" data-mode="pvp">👥 2 Players</button>
+        </div>
+      </div>
+
+      <!-- Difficulty Selector (Only visible in vs AI mode) -->
+      <div class="settings-row" id="difficultyRow">
+        <span class="setting-label">AI Level:</span>
+        <div class="toggle-group" id="difficultySelector">
+          <button class="toggle-btn" data-diff="easy">Easy</button>
+          <button class="toggle-btn" data-diff="medium">Medium</button>
+          <button class="toggle-btn active" data-diff="hard">Hard (Minimax)</button>
+        </div>
+      </div>
+
+      <!-- Pick Side (X or O) -->
+      <div class="settings-row" id="symbolRow">
+        <span class="setting-label">Your Symbol:</span>
+        <div class="toggle-group" id="symbolSelector">
+          <button class="toggle-btn active" data-symbol="X">Play as ✕ (First)</button>
+          <button class="toggle-btn" data-symbol="O">Play as ○ (Second)</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Turn Indicator & Status Banner -->
+    <div class="status-banner" id="statusBanner">
+      <span class="turn-symbol" id="turnSymbol">✕</span>
+      <span class="status-text" id="statusText">Your Turn</span>
+    </div>
+
+    <!-- Scoreboard Card -->
+    <div class="scoreboard-card">
+      <div class="score-box">
+        <span class="score-label" id="xScoreLabel">Player X</span>
+        <span class="score-number cyan" id="xScoreDisplay">0</span>
+      </div>
+
+      <div class="score-divider"></div>
+
+      <div class="score-box">
+        <span class="score-label">Draws</span>
+        <span class="score-number gold" id="drawsScoreDisplay">0</span>
+      </div>
+
+      <div class="score-divider"></div>
+
+      <div class="score-box">
+        <span class="score-label" id="oScoreLabel">AI (O)</span>
+        <span class="score-number pink" id="oScoreDisplay">0</span>
+      </div>
+    </div>
+
+    <!-- 3x3 Tic-Tac-Toe Game Board -->
+    <div class="board-container">
+      <div class="ttt-board" id="tttBoard">
+        <button class="cell" data-index="0" aria-label="Row 1, Column 1"></button>
+        <button class="cell" data-index="1" aria-label="Row 1, Column 2"></button>
+        <button class="cell" data-index="2" aria-label="Row 1, Column 3"></button>
+        <button class="cell" data-index="3" aria-label="Row 2, Column 1"></button>
+        <button class="cell" data-index="4" aria-label="Row 2, Column 2"></button>
+        <button class="cell" data-index="5" aria-label="Row 2, Column 3"></button>
+        <button class="cell" data-index="6" aria-label="Row 3, Column 1"></button>
+        <button class="cell" data-index="7" aria-label="Row 3, Column 2"></button>
+        <button class="cell" data-index="8" aria-label="Row 3, Column 3"></button>
+      </div>
+    </div>
+
+    <!-- Controls Bar -->
+    <div class="game-controls-bar">
+      <button id="restartRoundBtn" class="control-btn" title="Reset current board round">
+        <span>🔄</span>
+        <span>Restart Round</span>
+      </button>
+      <button id="resetScoreBtn" class="control-btn secondary-control" title="Reset all scoreboard wins">
+        <span>🧹</span>
+        <span>Reset Scores</span>
+      </button>
+    </div>
+
+    <!-- Instructions / Guide -->
+    <footer class="game-guide-box">
+      <div class="guide-item">
+        <span class="guide-tag">Pro Tip</span>
+        <span>Hard Mode uses an unbeatable <strong>Minimax AI</strong>. Can you outsmart it to achieve a draw?</span>
+      </div>
+    </footer>
+  </main>
+
+  <!-- Victory / Draw Modal Overlay -->
+  <div class="result-modal-backdrop hidden" id="resultModal">
+    <div class="result-modal-card">
+      <div class="result-icon" id="resultIcon">🏆</div>
+      <h2 class="result-title" id="resultTitle">Victory!</h2>
+      <p class="result-subtitle" id="resultSubtitle">Player X claimed three in a row.</p>
+
+      <div class="result-scoreboard">
+        <div class="res-stat-item">
+          <span class="res-stat-label">Player X</span>
+          <strong class="res-stat-val cyan" id="modalXScore">0</strong>
+        </div>
+        <div class="res-stat-item">
+          <span class="res-stat-label">Draws</span>
+          <strong class="res-stat-val gold" id="modalDraws">0</strong>
+        </div>
+        <div class="res-stat-item">
+          <span class="res-stat-label">Player O</span>
+          <strong class="res-stat-val pink" id="modalOScore">0</strong>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button id="nextRoundBtn" class="game-action-btn start-pulse">
+          <span>▶</span> Play Next Round
+        </button>
+        <button id="closeModalBtn" class="game-action-btn secondary-btn">
+          <span>🔍</span> View Board
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Audio Engine & Game Script -->
+  <script src="../../js/audio.js"></script>
+  <script src="tictactoe.js"></script>
+</body>
+</html>

@@ -1,0 +1,145 @@
+/* ===================================================================
+   PlayZone - Mobile & Tablet Responsive Stylesheet
+   =================================================================== */
+
+/* Tablet & Smaller Laptops (<= 1024px) */
+@media (max-width: 1024px) {
+  .hero-section {
+    padding: 3rem 1.25rem 2rem;
+  }
+
+  .games-grid {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.25rem;
+  }
+}
+
+/* Tablets (<= 768px) */
+@media (max-width: 768px) {
+  .nav-container {
+    flex-wrap: wrap;
+    gap: 0.9rem;
+  }
+
+  .brand-logo {
+    order: 1;
+  }
+
+  .nav-actions {
+    order: 2;
+    margin-left: auto;
+  }
+
+  .search-box {
+    order: 3;
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .btn-label {
+    display: none; /* Icon-only on mobile to save space */
+  }
+
+  .icon-btn {
+    padding: 0.5rem 0.65rem;
+  }
+
+  .action-btn-sm {
+    padding: 0.5rem 0.75rem;
+  }
+
+  .hero-section {
+    padding: 2.5rem 1rem 1.75rem;
+  }
+
+  .hero-subtitle {
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-stats {
+    padding: 0.6rem 1.2rem;
+    gap: 1rem;
+    width: 100%;
+    max-width: 380px;
+    justify-content: space-around;
+  }
+
+  .stat-number {
+    font-size: 1.1rem;
+  }
+
+  .stat-label {
+    font-size: 0.7rem;
+  }
+
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  /* Horizontal swipeable category chips */
+  .category-filters {
+    width: 100%;
+    overflow-x: auto;
+    white-space: nowrap;
+    padding-bottom: 0.4rem;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* Firefox */
+  }
+
+  .category-filters::-webkit-scrollbar {
+    display: none; /* Chrome/Safari */
+  }
+
+  .filter-tab {
+    flex-shrink: 0;
+    padding: 0.45rem 0.95rem;
+    font-size: 0.82rem;
+  }
+
+  .footer-container {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+
+  .footer-meta {
+    align-items: flex-start;
+    width: 100%;
+  }
+}
+
+/* Mobile Phones (<= 480px) */
+@media (max-width: 480px) {
+  .hero-title {
+    font-size: 2rem;
+  }
+
+  .hero-badge {
+    font-size: 0.75rem;
+    padding: 0.3rem 0.75rem;
+  }
+
+  .games-grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  .card-banner {
+    height: 130px;
+  }
+
+  .card-icon {
+    font-size: 3.2rem;
+  }
+
+  .card-body {
+    padding: 1.1rem;
+  }
+
+  .play-btn {
+    padding: 0.85rem; /* Larger touch target */
+  }
+}

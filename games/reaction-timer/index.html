@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reflex Speed Test | PlayZone Arcade</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%230a0d14'/><path d='M9 13h14a5 5 0 0 1 5 5v2a3 3 0 0 1-5 2l-3-4h-8l-3 4a3 3 0 0 1-5-2v-2a5 5 0 0 1 5-5z' fill='%23121724' stroke='%2300f0ff' stroke-width='1.5'/><circle cx='21' cy='17' r='1' fill='%23ec4899'/><circle cx='24' cy='17' r='1' fill='%23a855f7'/><path d='M8 17h4m-2-2v4' stroke='%2300f0ff' stroke-width='1.2' stroke-linecap='round'/></svg>">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+
+  <!-- Core Theme & Game Styles -->
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="reaction.css">
+</head>
+<body class="reaction-page">
+
+  <!-- Background decorative light orbs -->
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
+
+  <!-- Top Navigation Header -->
+  <header class="game-header">
+    <div class="game-nav-container">
+      <a href="../../index.html" class="back-link" id="backToHome">
+        <span class="back-arrow">←</span>
+        <span>Back to PlayZone</span>
+      </a>
+
+      <div class="game-title-wrap">
+        <span class="game-icon">⚡</span>
+        <h1 class="game-heading">Reflex <span class="gradient-text">Speed Test</span></h1>
+      </div>
+
+      <!-- In-game Sound Toggle -->
+      <button id="soundToggle" class="icon-btn" aria-label="Toggle sound" title="Toggle Sound">
+        <span id="soundIcon">🔊</span>
+        <span class="btn-label">Sound</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Game Stage -->
+  <main class="game-wrapper">
+
+    <!-- Mode Selector Tabs (Single Test vs 5-Round Challenge) -->
+    <div class="mode-tabs-bar">
+      <span class="mode-label">Mode:</span>
+      <div class="mode-tabs" id="modeTabs">
+        <button class="mode-tab active" data-mode="single">⚡ Quick Single Test</button>
+        <button class="mode-tab" data-mode="challenge">🏆 5-Round Challenge</button>
+      </div>
+    </div>
+
+    <!-- Live Scoreboard Card -->
+    <div class="scoreboard-card">
+      <div class="score-box">
+        <span class="score-label" id="roundProgressLabel">Test Mode</span>
+        <span class="score-number cyan" id="roundProgressDisplay">Single</span>
+      </div>
+
+      <div class="score-divider"></div>
+
+      <div class="score-box">
+        <span class="score-label" id="statMiddleLabel">Last Time</span>
+        <span class="score-number" id="lastTimeDisplay">--</span>
+      </div>
+
+      <div class="score-divider"></div>
+
+      <div class="score-box best-score-box">
+        <span class="score-label">Best Record</span>
+        <span class="score-number gold" id="bestTimeDisplay">--</span>
+      </div>
+    </div>
+
+    <!-- Interactive Reaction Pad Area -->
+    <div class="reaction-pad-container">
+      <div class="reaction-pad state-idle" id="reactionPad" role="button" tabindex="0" aria-label="Reaction test click area">
+        <div class="pad-content" id="padContent">
+          <div class="pad-icon" id="padIcon">⚡</div>
+          <h2 class="pad-title" id="padTitle">Tap Anywhere to Start</h2>
+          <p class="pad-subtitle" id="padSubtitle">When the red screen turns bright green, click as fast as humanly possible.</p>
+          <span class="pad-action-tag" id="padActionTag">START TEST</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5-Round History Tracker (Visible in Challenge Mode) -->
+    <div class="challenge-rounds-card hidden" id="challengeRoundsCard">
+      <div class="challenge-rounds-header">
+        <span class="cr-title">5-Round Progress</span>
+        <span class="cr-avg" id="challengeAvgDisplay">Average: --</span>
+      </div>
+      <div class="round-chips-row" id="roundChipsRow">
+        <div class="round-chip" data-round="1"><span class="chip-num">R1</span><span class="chip-val">--</span></div>
+        <div class="round-chip" data-round="2"><span class="chip-num">R2</span><span class="chip-val">--</span></div>
+        <div class="round-chip" data-round="3"><span class="chip-num">R3</span><span class="chip-val">--</span></div>
+        <div class="round-chip" data-round="4"><span class="chip-num">R4</span><span class="chip-val">--</span></div>
+        <div class="round-chip" data-round="5"><span class="chip-num">R5</span><span class="chip-val">--</span></div>
+      </div>
+    </div>
+
+    <!-- Quick Action Controls -->
+    <div class="game-controls-bar">
+      <button id="resetTestBtn" class="control-btn" title="Reset test">
+        <span>🔄</span>
+        <span>Reset Test</span>
+      </button>
+      <button id="resetBestBtn" class="control-btn secondary-control" title="Reset saved best time">
+        <span>🧹</span>
+        <span>Clear Record</span>
+      </button>
+    </div>
+
+    <!-- Instructions / Reflex Standards Guide -->
+    <footer class="game-guide-box">
+      <div class="guide-item">
+        <span class="guide-tag">Benchmarks</span>
+        <span>Average human reaction time is ~<strong>250ms</strong>. Pro gamers reach ~<strong>180-210ms</strong>.</span>
+      </div>
+    </footer>
+  </main>
+
+  <!-- Challenge Summary Modal (5-Round Completion) -->
+  <div class="summary-modal-backdrop hidden" id="summaryModal">
+    <div class="summary-modal-card">
+      <div class="summary-icon" id="summaryIcon">🏆</div>
+      <h2 class="summary-title" id="summaryTitle">Challenge Complete!</h2>
+      <p class="summary-tier" id="summaryTier">Pro Gamer Reflexes ⚡</p>
+
+      <div class="summary-stats-grid">
+        <div class="sum-stat-item">
+          <span class="sum-stat-label">Average Speed</span>
+          <strong class="sum-stat-val cyan" id="summaryAvgVal">212 ms</strong>
+        </div>
+        <div class="sum-stat-item">
+          <span class="sum-stat-label">Best Round</span>
+          <strong class="sum-stat-val gold" id="summaryBestVal">189 ms</strong>
+        </div>
+      </div>
+
+      <div class="summary-rounds-list" id="summaryRoundsList">
+        <!-- Injected list of all 5 round times -->
+      </div>
+
+      <!-- New Record Alert Badge -->
+      <div id="newBestBadge" class="new-record-badge hidden">
+        ⚡ New Best Reaction Time!
+      </div>
+
+      <div class="modal-actions">
+        <button id="playAgainChallengeBtn" class="game-action-btn start-pulse">
+          <span>🔄</span> Play Challenge Again
+        </button>
+        <button id="closeSummaryBtn" class="game-action-btn secondary-btn">
+          <span>✕</span> Close
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Audio Engine & Game Script -->
+  <script src="../../js/audio.js"></script>
+  <script src="reaction.js"></script>
+</body>
+</html>
