@@ -1,4 +1,4 @@
- /**
+/**
  * PlayZone - Neon Snake Game Engine
  * Features: Responsive Canvas, Arrow/WASD/Touch/D-pad controls, High Score persistence, Sound FX.
  */
@@ -249,26 +249,18 @@
       y: snake[0].y + direction.y
     };
 
-    // 1. Check Wall Collision
- if (head.x < 0) {
-  head.x = GRID_SIZE - 1;
-} else if (head.x >= GRID_SIZE) {
-  head.x = 0;
-}
+    // 1. Wall Wrap-Around (Screen Wrapping)
+    if (head.x < 0) {
+      head.x = GRID_SIZE - 1; // Left to Right
+    } else if (head.x >= GRID_SIZE) {
+      head.x = 0;             // Right to Left
+    }
 
-if (head.y < 0) {
-  head.y = GRID_SIZE - 1;
-} else if (head.y >= GRID_SIZE) {
-  head.y = 0;
-}
-
-// 2. Check Self-Collision
-for (let i = 0; i < snake.length; i++) {
-  if (head.x === snake[i].x && head.y === snake[i].y) {
-    triggerGameOver();
-    return;
-  }
-}
+    if (head.y < 0) {
+      head.y = GRID_SIZE - 1; // Top to Bottom
+    } else if (head.y >= GRID_SIZE) {
+      head.y = 0;             // Bottom to Top
+    }
 
     // 2. Check Self-Collision
     for (let i = 0; i < snake.length; i++) {
