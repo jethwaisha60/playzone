@@ -105,6 +105,11 @@
     gap: 1.5rem;
   }
 
+  .footer-links-grid {
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
   .footer-meta {
     align-items: flex-start;
     width: 100%;
@@ -141,5 +146,13 @@
 
   .play-btn {
     padding: 0.85rem; /* Larger touch target */
+  }
+
+  .footer-links-grid {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.6rem 1.25rem;
   }
 }
