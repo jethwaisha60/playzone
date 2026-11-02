@@ -31,7 +31,8 @@
     <div class="game-nav-container">
       <a href="../../index.html" class="back-link" id="backToHome">
         <span class="back-arrow">←</span>
-        <span>Back to PlayZone</span>
+        <span class="back-label-full">Back to PlayZone</span>
+        <span class="back-label-short">Back</span>
       </a>
 
       <div class="game-title-wrap">
@@ -161,113 +162,112 @@
 
       <!-- Floating Feedback & Particle Layer -->
       <div class="effects-layer" id="effectsLayer"></div>
+    </div>
 
-      <!-- Overlay: Start / Ready -->
-      <div class="game-overlay" id="startOverlay">
-        <div class="overlay-card">
-          <div class="overlay-icon">🔨</div>
-          <h2 class="overlay-title">Neon <span class="gradient-text">Whack-a-Mole</span></h2>
-          <p class="overlay-desc">Smash popping moles, catch golden bonuses, and avoid dangerous cyber-bombs before time expires!</p>
+    <!-- Overlay: Start / Ready -->
+    <div class="game-overlay" id="startOverlay">
+      <div class="overlay-card">
+        <div class="overlay-icon">🔨</div>
+        <h2 class="overlay-title">Neon <span class="gradient-text">Whack-a-Mole</span></h2>
+        <p class="overlay-desc">Smash popping moles, catch golden bonuses, and avoid dangerous cyber-bombs before time expires!</p>
 
-          <div class="legend-cards">
-            <div class="legend-card">
-              <span class="legend-icon">🐹</span>
-              <div class="legend-info">
-                <strong>Cyber Mole</strong>
-                <span class="legend-pts cyan">+10 pts</span>
-              </div>
-            </div>
-            <div class="legend-card gold-legend">
-              <span class="legend-icon">👑</span>
-              <div class="legend-info">
-                <strong>Golden Mole</strong>
-                <span class="legend-pts gold">+50 pts</span>
-              </div>
-            </div>
-            <div class="legend-card bomb-legend">
-              <span class="legend-icon">💣</span>
-              <div class="legend-info">
-                <strong>Cyber Bomb</strong>
-                <span class="legend-pts red">-20 pts</span>
-              </div>
+        <div class="legend-cards">
+          <div class="legend-card">
+            <span class="legend-icon">🐹</span>
+            <div class="legend-info">
+              <strong>Cyber Mole</strong>
+              <span class="legend-pts cyan">+10 pts</span>
             </div>
           </div>
+          <div class="legend-card gold-legend">
+            <span class="legend-icon">👑</span>
+            <div class="legend-info">
+              <strong>Golden Mole</strong>
+              <span class="legend-pts gold">+50 pts</span>
+            </div>
+          </div>
+          <div class="legend-card bomb-legend">
+            <span class="legend-icon">💣</span>
+            <div class="legend-info">
+              <strong>Cyber Bomb</strong>
+              <span class="legend-pts red">-20 pts</span>
+            </div>
+          </div>
+        </div>
 
-          <button id="startBtn" class="game-action-btn start-pulse">
-            <span>⚡</span> Start Game (30s)
+        <button id="startBtn" class="game-action-btn start-pulse">
+          <span>⚡</span> Start Game (30s)
+        </button>
+      </div>
+    </div>
+
+    <!-- Overlay: Pause -->
+    <div class="game-overlay hidden" id="pauseOverlay">
+      <div class="overlay-card">
+        <div class="overlay-icon">⏸️</div>
+        <h2 class="overlay-title">Game <span class="gradient-text">Paused</span></h2>
+        <p class="overlay-desc">Catch your breath! The timer and moles are frozen.</p>
+        <div class="overlay-buttons">
+          <button id="resumeBtn" class="game-action-btn">
+            <span>▶️</span> Resume
+          </button>
+          <button id="pauseRestartBtn" class="secondary-action-btn">
+            <span>🔄</span> Restart
           </button>
         </div>
       </div>
+    </div>
 
-      <!-- Overlay: Pause -->
-      <div class="game-overlay hidden" id="pauseOverlay">
-        <div class="overlay-card">
-          <div class="overlay-icon">⏸️</div>
-          <h2 class="overlay-title">Game <span class="gradient-text">Paused</span></h2>
-          <p class="overlay-desc">Catch your breath! The timer and moles are frozen.</p>
-          <div class="overlay-buttons">
-            <button id="resumeBtn" class="game-action-btn">
-              <span>▶️</span> Resume
-            </button>
-            <button id="pauseRestartBtn" class="secondary-action-btn">
-              <span>🔄</span> Restart
-            </button>
+    <!-- Overlay: Game Over & Statistics -->
+    <div class="game-overlay hidden" id="gameOverOverlay">
+      <div class="overlay-card game-over-card">
+        <div class="overlay-icon" id="gameOverIcon">🏆</div>
+        <h2 class="overlay-title">Time's <span class="gradient-text">Up!</span></h2>
+        <p class="overlay-desc" id="gameOverMessage">Fantastic reflex workout!</p>
+
+        <div class="final-score-callout">
+          <span class="callout-label">FINAL SCORE</span>
+          <div class="callout-value" id="finalScoreVal">0</div>
+        </div>
+
+        <div id="newBestBadge" class="new-record-badge hidden">
+          ✨ New Personal Best! ✨
+        </div>
+
+        <!-- Comprehensive Stats Grid -->
+        <div class="modal-stats-grid">
+          <div class="modal-stat-item">
+            <span class="m-label">Best Record</span>
+            <strong id="finalBestVal" class="gold">0</strong>
+          </div>
+          <div class="modal-stat-item">
+            <span class="m-label">Hit Accuracy</span>
+            <strong id="finalAccuracyVal" class="purple">100%</strong>
+          </div>
+          <div class="modal-stat-item">
+            <span class="m-label">Moles Whacked</span>
+            <strong id="finalMolesVal" class="cyan">0</strong>
+          </div>
+          <div class="modal-stat-item">
+            <span class="m-label">Golden Bonuses</span>
+            <strong id="finalGoldenVal" class="gold">0</strong>
+          </div>
+          <div class="modal-stat-item">
+            <span class="m-label">Bombs Hit</span>
+            <strong id="finalBombsVal" class="red">0</strong>
+          </div>
+          <div class="modal-stat-item">
+            <span class="m-label">Difficulty</span>
+            <strong id="finalDiffVal" class="emerald">Easy</strong>
           </div>
         </div>
-      </div>
 
-      <!-- Overlay: Game Over & Statistics -->
-      <div class="game-overlay hidden" id="gameOverOverlay">
-        <div class="overlay-card game-over-card">
-          <div class="overlay-icon" id="gameOverIcon">🏆</div>
-          <h2 class="overlay-title">Time's <span class="gradient-text">Up!</span></h2>
-          <p class="overlay-desc" id="gameOverMessage">Fantastic reflex workout!</p>
-
-          <div class="final-score-callout">
-            <span class="callout-label">FINAL SCORE</span>
-            <div class="callout-value" id="finalScoreVal">0</div>
-          </div>
-
-          <div id="newBestBadge" class="new-record-badge hidden">
-            ✨ New Personal Best! ✨
-          </div>
-
-          <!-- Comprehensive Stats Grid -->
-          <div class="modal-stats-grid">
-            <div class="modal-stat-item">
-              <span class="m-label">Best Record</span>
-              <strong id="finalBestVal" class="gold">0</strong>
-            </div>
-            <div class="modal-stat-item">
-              <span class="m-label">Hit Accuracy</span>
-              <strong id="finalAccuracyVal" class="purple">100%</strong>
-            </div>
-            <div class="modal-stat-item">
-              <span class="m-label">Moles Whacked</span>
-              <strong id="finalMolesVal" class="cyan">0</strong>
-            </div>
-            <div class="modal-stat-item">
-              <span class="m-label">Golden Bonuses</span>
-              <strong id="finalGoldenVal" class="gold">0</strong>
-            </div>
-            <div class="modal-stat-item">
-              <span class="m-label">Bombs Hit</span>
-              <strong id="finalBombsVal" class="red">0</strong>
-            </div>
-            <div class="modal-stat-item">
-              <span class="m-label">Difficulty</span>
-              <strong id="finalDiffVal" class="emerald">Easy</strong>
-            </div>
-          </div>
-
-          <div class="overlay-buttons">
-            <button id="playAgainBtn" class="game-action-btn start-pulse">
-              <span>🔄</span> Play Again
-            </button>
-          </div>
+        <div class="overlay-buttons">
+          <button id="playAgainBtn" class="game-action-btn start-pulse">
+            <span>🔄</span> Play Again
+          </button>
         </div>
       </div>
-
     </div>
 
     <!-- Quick Action Control Bar (Pause, Restart) -->
