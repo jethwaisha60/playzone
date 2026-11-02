@@ -157,6 +157,36 @@
   box-shadow: var(--card-shadow), 0 0 25px rgba(0, 240, 255, 0.15);
   border: 2px solid rgba(0, 240, 255, 0.35);
   background: #080b12;
+  touch-action: none;
+}
+
+/* Subtle Game Over Screen Shake (2-3px) */
+.canvas-container.shake-impact {
+  animation: canvas-screen-shake 0.3s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+@keyframes canvas-screen-shake {
+  0%, 100% {
+    transform: translate3d(0, 0, 0);
+  }
+  20% {
+    transform: translate3d(-2.5px, 2px, 0);
+  }
+  40% {
+    transform: translate3d(2.5px, -2px, 0);
+  }
+  60% {
+    transform: translate3d(-1.5px, 1.5px, 0);
+  }
+  80% {
+    transform: translate3d(1px, -1px, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .canvas-container.shake-impact {
+    animation: none !important;
+  }
 }
 
 #gameCanvas {
@@ -164,7 +194,7 @@
   width: 100%;
   height: 100%;
   background: radial-gradient(circle at center, #0f1523 0%, #080b12 100%);
-  image-rendering: pixelated;
+  touch-action: none;
 }
 
 /* Canvas Overlays (Start, Pause, Game Over) */
