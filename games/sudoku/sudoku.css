@@ -1,0 +1,770 @@
+/* ===================================================================
+   PlayZone - Cyber Sudoku Custom Stylesheet
+   =================================================================== */
+
+:root {
+  --board-max-width: 450px;
+  --cell-radius: 4px;
+  --board-radius: 16px;
+  --subgrid-border: 2px solid rgba(0, 240, 255, 0.55);
+}
+
+.sudoku-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg-primary);
+  color: var(--text-main);
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  overflow-x: hidden;
+}
+
+/* ===================================================================
+   Header & Navigation
+   =================================================================== */
+.game-header {
+  background: rgba(10, 13, 20, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border-color);
+  padding: 0.85rem 1.25rem;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.game-nav-container {
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 0.45rem 0.85rem;
+  border-radius: 999px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  transition: var(--transition-normal);
+}
+
+.back-link:hover {
+  color: var(--neon-cyan);
+  border-color: rgba(0, 240, 255, 0.4);
+  transform: translateX(-3px);
+  box-shadow: 0 0 15px rgba(0, 240, 255, 0.15);
+}
+
+.back-arrow {
+  font-size: 1.1rem;
+  transition: transform var(--transition-fast);
+}
+
+.back-link:hover .back-arrow {
+  transform: translateX(-2px);
+}
+
+.game-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.game-icon {
+  font-size: 1.6rem;
+  filter: drop-shadow(0 0 8px rgba(0, 240, 255, 0.4));
+}
+
+.game-heading {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+/* ===================================================================
+   Main Game Wrapper
+   =================================================================== */
+.game-wrapper {
+  max-width: 520px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 1.25rem 1rem 3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+}
+
+/* Difficulty Selector Tabs */
+.difficulty-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.9rem;
+  width: 100%;
+  max-width: var(--board-max-width);
+  justify-content: center;
+}
+
+.diff-label {
+  font-size: 0.82rem;
+  color: var(--text-dim);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.diff-tabs {
+  display: flex;
+  align-items: center;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  padding: 0.25rem;
+  border-radius: 999px;
+  gap: 0.25rem;
+}
+
+.diff-tab {
+  background: transparent;
+  color: var(--text-muted);
+  border: none;
+  padding: 0.35rem 0.85rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.diff-tab:hover {
+  color: var(--text-main);
+}
+
+.diff-tab.active {
+  background: linear-gradient(135deg, rgba(0, 240, 255, 0.25), rgba(168, 85, 247, 0.25));
+  color: var(--neon-cyan);
+  box-shadow: 0 0 10px rgba(0, 240, 255, 0.2);
+}
+
+/* Scoreboard Card */
+.scoreboard-card {
+  width: 100%;
+  max-width: var(--board-max-width);
+  background: var(--bg-card);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  padding: 0.75rem 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  box-shadow: var(--card-shadow);
+}
+
+.score-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.score-label {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-dim);
+  font-weight: 600;
+  margin-bottom: 0.15rem;
+}
+
+.digital-display {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--neon-cyan);
+  background: #060911;
+  border: 1px solid rgba(0, 240, 255, 0.25);
+  border-radius: 8px;
+  padding: 0.15rem 0.55rem;
+  min-width: 65px;
+  text-align: center;
+  letter-spacing: 0.05em;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.7);
+  text-shadow: 0 0 8px rgba(0, 240, 255, 0.5);
+}
+
+.stat-value {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.stat-value.error-stat {
+  color: #f87171;
+}
+
+.score-number {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.score-number.gold {
+  color: var(--neon-amber);
+  text-shadow: 0 0 10px rgba(245, 158, 11, 0.3);
+}
+
+.score-divider {
+  width: 1px;
+  height: 28px;
+  background: var(--border-color);
+}
+
+/* ===================================================================
+   Sudoku 9x9 Board
+   =================================================================== */
+.board-wrapper {
+  width: 100%;
+  max-width: var(--board-max-width);
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.board-container {
+  width: 100%;
+  aspect-ratio: 1;
+  background: rgba(14, 18, 30, 0.95);
+  border: 2px solid rgba(0, 240, 255, 0.45);
+  border-radius: var(--board-radius);
+  padding: 6px;
+  position: relative;
+  box-shadow: 0 16px 36px -10px rgba(0, 0, 0, 0.7), 0 0 30px rgba(0, 240, 255, 0.12);
+  outline: none;
+}
+
+.sudoku-grid {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  grid-template-rows: repeat(9, 1fr);
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+/* Individual Cell */
+.sudoku-cell {
+  background: rgba(16, 22, 36, 0.96);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.45rem;
+  cursor: pointer;
+  position: relative;
+  transition: background 0.1s ease, color 0.1s ease, transform 0.08s ease;
+  line-height: 1;
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  color: #c084fc; /* User-entered numbers */
+}
+
+/* 3x3 Subgrid Block Separators */
+.sudoku-cell[data-col="2"],
+.sudoku-cell[data-col="5"] {
+  border-right: var(--subgrid-border);
+}
+
+.sudoku-cell[data-col="8"] {
+  border-right: none;
+}
+
+.sudoku-cell[data-row="2"],
+.sudoku-cell[data-row="5"] {
+  border-bottom: var(--subgrid-border);
+}
+
+.sudoku-cell[data-row="8"] {
+  border-bottom: none;
+}
+
+/* Initial Clues (Given Numbers) */
+.sudoku-cell.given {
+  color: var(--neon-cyan);
+  font-weight: 800;
+  text-shadow: 0 0 10px rgba(0, 240, 255, 0.35);
+}
+
+/* Highlight States */
+.sudoku-cell.related {
+  background: rgba(26, 36, 58, 0.7);
+}
+
+.sudoku-cell.same-number {
+  background: rgba(168, 85, 247, 0.24);
+  color: #ffffff;
+}
+
+.sudoku-cell.selected {
+  background: rgba(0, 240, 255, 0.3) !important;
+  box-shadow: inset 0 0 0 2px var(--neon-cyan), 0 0 15px rgba(0, 240, 255, 0.45);
+  z-index: 5;
+}
+
+.sudoku-cell.error {
+  background: rgba(244, 63, 94, 0.32) !important;
+  color: #f43f5e !important;
+  animation: errorShake 0.3s ease-in-out;
+}
+
+@keyframes errorShake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-3px); }
+  75% { transform: translateX(3px); }
+}
+
+/* Pencil Notes 3x3 Mini-Grid */
+.notes-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  width: 100%;
+  height: 100%;
+  padding: 2px;
+  pointer-events: none;
+}
+
+.note-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: #94a3b8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+/* ===================================================================
+   Tools Bar (Undo, Erase, Notes, Hint)
+   =================================================================== */
+.tools-bar {
+  width: 100%;
+  max-width: var(--board-max-width);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5rem;
+  margin-top: 0.9rem;
+  margin-bottom: 0.9rem;
+}
+
+.tool-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 0.5rem 0.3rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.tool-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.25);
+  color: var(--text-main);
+  transform: translateY(-1px);
+}
+
+.tool-btn.active {
+  background: linear-gradient(135deg, rgba(0, 240, 255, 0.2), rgba(168, 85, 247, 0.2));
+  border-color: var(--neon-cyan);
+  color: var(--neon-cyan);
+  box-shadow: 0 0 15px rgba(0, 240, 255, 0.25);
+}
+
+.tool-icon {
+  font-size: 1.25rem;
+}
+
+.tool-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+/* ===================================================================
+   Keypad (1 to 9)
+   =================================================================== */
+.keypad-container {
+  width: 100%;
+  max-width: var(--board-max-width);
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  gap: 0.4rem;
+  margin-bottom: 1.1rem;
+}
+
+.keypad-btn {
+  aspect-ratio: 1;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  color: var(--text-main);
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--transition-fast);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.keypad-btn:hover:not(.completed) {
+  background: linear-gradient(135deg, rgba(0, 240, 255, 0.2), rgba(168, 85, 247, 0.2));
+  border-color: var(--neon-cyan);
+  color: var(--neon-cyan);
+  transform: translateY(-2px);
+  box-shadow: 0 0 12px rgba(0, 240, 255, 0.3);
+}
+
+.keypad-btn:active:not(.completed) {
+  transform: scale(0.94);
+}
+
+.keypad-btn.completed {
+  opacity: 0.35;
+  cursor: default;
+  border-color: transparent;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+/* Bottom Actions Bar (Restart, New Puzzle) */
+.bottom-actions-bar {
+  width: 100%;
+  max-width: var(--board-max-width);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.control-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: var(--bg-secondary);
+  color: var(--text-main);
+  border: 1px solid var(--border-color);
+  padding: 0.6rem 1.25rem;
+  border-radius: 12px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition-normal);
+}
+
+.control-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.25);
+  transform: translateY(-1px);
+}
+
+.primary-action-btn {
+  background: linear-gradient(135deg, rgba(0, 240, 255, 0.15), rgba(168, 85, 247, 0.2));
+  border-color: rgba(0, 240, 255, 0.35);
+  color: var(--neon-cyan);
+}
+
+.primary-action-btn:hover {
+  background: linear-gradient(135deg, var(--neon-cyan), var(--neon-purple));
+  color: #05070a;
+  box-shadow: var(--glow-cyan);
+}
+
+/* ===================================================================
+   Overlays (Win & Game Over)
+   =================================================================== */
+.canvas-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(10, 13, 20, 0.93);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: var(--board-radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  z-index: 100;
+  animation: overlayFadeIn 0.25s ease-out forwards;
+}
+
+.canvas-overlay.hidden {
+  display: none;
+}
+
+@keyframes overlayFadeIn {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.overlay-content {
+  text-align: center;
+  max-width: 320px;
+  width: 100%;
+}
+
+.overlay-icon {
+  font-size: 3.2rem;
+  margin-bottom: 0.5rem;
+  filter: drop-shadow(0 4px 16px rgba(0, 0, 0, 0.6));
+}
+
+.overlay-title {
+  font-family: var(--font-display);
+  font-size: 1.7rem;
+  font-weight: 800;
+  margin-bottom: 0.35rem;
+  color: var(--text-main);
+}
+
+.overlay-desc {
+  color: var(--text-muted);
+  font-size: 0.88rem;
+  line-height: 1.4;
+  margin-bottom: 1.25rem;
+}
+
+.modal-stats {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 0.65rem 1rem;
+  margin-bottom: 1.1rem;
+}
+
+.modal-stat-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-stat-item span {
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.modal-stat-item strong {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  color: var(--text-main);
+}
+
+.modal-stat-item strong.cyan {
+  color: var(--neon-cyan);
+}
+
+.modal-stat-item strong.gold {
+  color: var(--neon-amber);
+}
+
+.new-record-badge {
+  display: inline-block;
+  background: rgba(245, 158, 11, 0.15);
+  border: 1px solid var(--neon-amber);
+  color: var(--neon-amber);
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 0.35rem 0.8rem;
+  border-radius: 999px;
+  margin-bottom: 1.2rem;
+  animation: pulseGold 1.5s infinite alternate;
+}
+
+.new-record-badge.hidden {
+  display: none;
+}
+
+@keyframes pulseGold {
+  from { box-shadow: 0 0 10px rgba(245, 158, 11, 0.2); }
+  to { box-shadow: 0 0 25px rgba(245, 158, 11, 0.5); }
+}
+
+.modal-btn-row {
+  display: flex;
+  gap: 0.65rem;
+  justify-content: center;
+}
+
+.game-action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.3rem;
+  background: linear-gradient(135deg, var(--neon-cyan), #00b4d8);
+  color: #040810;
+  font-weight: 700;
+  font-size: 0.95rem;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 4px 18px rgba(0, 240, 255, 0.35);
+  transition: var(--transition-normal);
+}
+
+.game-action-btn:hover {
+  background: linear-gradient(135deg, #38bdf8, var(--neon-purple));
+  color: #ffffff;
+  box-shadow: var(--glow-purple);
+  transform: translateY(-2px);
+}
+
+.game-action-btn.secondary-btn {
+  background: var(--bg-secondary);
+  color: var(--text-main);
+  border: 1px solid var(--border-color);
+  box-shadow: none;
+}
+
+.game-action-btn.secondary-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.start-pulse {
+  animation: btnPulse 2s infinite ease-in-out;
+}
+
+@keyframes btnPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.03); }
+}
+
+/* ===================================================================
+   Game Guide Box
+   =================================================================== */
+.game-guide-box {
+  width: 100%;
+  max-width: var(--board-max-width);
+  margin-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  padding: 0.9rem 1.1rem;
+}
+
+.guide-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.83rem;
+  color: var(--text-muted);
+}
+
+.guide-tag {
+  background: rgba(0, 240, 255, 0.1);
+  color: var(--neon-cyan);
+  border: 1px solid rgba(0, 240, 255, 0.25);
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.15rem 0.5rem;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+
+/* ===================================================================
+   Responsive Media Queries
+   =================================================================== */
+@media (max-width: 480px) {
+  :root {
+    --board-max-width: 100%;
+  }
+
+  .game-wrapper {
+    padding: 1rem 0.65rem 2.5rem;
+  }
+
+  .board-container {
+    padding: 4px;
+  }
+
+  .sudoku-cell {
+    font-size: 1.25rem;
+  }
+
+  .note-num {
+    font-size: 0.55rem;
+  }
+
+  .keypad-container {
+    gap: 0.25rem;
+  }
+
+  .keypad-btn {
+    font-size: 1.15rem;
+  }
+
+  .tools-bar {
+    gap: 0.35rem;
+  }
+
+  .tool-btn {
+    padding: 0.45rem 0.2rem;
+  }
+
+  .tool-icon {
+    font-size: 1.1rem;
+  }
+
+  .tool-label {
+    font-size: 0.68rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .sudoku-cell {
+    font-size: 1.1rem;
+  }
+
+  .note-num {
+    font-size: 0.5rem;
+  }
+}

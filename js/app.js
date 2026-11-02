@@ -76,6 +76,18 @@ const GAMES_CATALOG = [
     scoreKey: 'playzone_score_minesweeper',
     scoreUnit: 's',
     path: 'games/minesweeper/index.html'
+  },
+  {
+    id: 'sudoku',
+    title: 'Sudoku',
+    category: 'puzzle',
+    badge: 'Logic',
+    difficulty: 'Medium',
+    icon: '🔢',
+    description: 'Complete the 9×9 Sudoku grid using logic, number clues, and careful thinking.',
+    scoreKey: 'playzone_score_sudoku',
+    scoreUnit: 's',
+    path: 'games/sudoku/index.html'
   }
 ];
 
