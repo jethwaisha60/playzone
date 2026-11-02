@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Whack-a-Mole | PlayZone Arcade</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%230a0d14'/><path d='M9 13h14a5 5 0 0 1 5 5v2a3 3 0 0 1-5 2l-3-4h-8l-3 4a3 3 0 0 1-5-2v-2a5 5 0 0 1 5-5z' fill='%23121724' stroke='%2300f0ff' stroke-width='1.5'/><circle cx='21' cy='17' r='1' fill='%23ec4899'/><circle cx='24' cy='17' r='1' fill='%23a855f7'/><path d='M8 17h4m-2-2v4' stroke='%2300f0ff' stroke-width='1.2' stroke-linecap='round'/></svg>">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700;800&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
+
+  <!-- Core Theme & Game Styles -->
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="whack-a-mole.css">
+
+  <!-- Google AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1365345472330703" crossorigin="anonymous"></script>
+</head>
+<body class="mole-page">
+
+  <!-- Background decorative light orbs -->
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
+
+  <!-- Top Navigation Header -->
+  <header class="game-header">
+    <div class="game-nav-container">
+      <a href="../../index.html" class="back-link" id="backToHome">
+        <span class="back-arrow">←</span>
+        <span>Back to PlayZone</span>
+      </a>
+
+      <div class="game-title-wrap">
+        <span class="game-icon">🔨</span>
+        <h1 class="game-heading">Neon <span class="gradient-text">Whack-a-Mole</span></h1>
+      </div>
+
+      <!-- In-game Sound Toggle -->
+      <button id="soundToggle" class="icon-btn" aria-label="Toggle sound" title="Toggle Sound">
+        <span id="soundIcon">🔊</span>
+        <span class="btn-label">Sound</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Game Stage -->
+  <main class="game-wrapper">
+
+    <!-- Difficulty Selector Bar -->
+    <div class="difficulty-bar">
+      <span class="diff-label">Difficulty:</span>
+      <div class="diff-tabs" id="difficultyTabs">
+        <button class="diff-tab active" data-difficulty="easy">🌱 Easy</button>
+        <button class="diff-tab" data-difficulty="medium">⚡ Medium</button>
+        <button class="diff-tab" data-difficulty="hard">🔥 Hard</button>
+      </div>
+    </div>
+
+    <!-- Score & Stats Bar -->
+    <div class="scoreboard-card">
+      <!-- Live Score -->
+      <div class="score-box">
+        <span class="score-label">Score</span>
+        <span class="score-number cyan" id="scoreDisplay">0</span>
+      </div>
+
+      <div class="score-divider"></div>
+
+      <!-- Countdown Timer -->
+      <div class="score-box">
+        <span class="score-label">Time Left</span>
+        <span class="score-number emerald" id="timerDisplay">30s</span>
+      </div>
+
+      <div class="score-divider"></div>
+
+      <!-- Personal Best -->
+      <div class="score-box">
+        <span class="score-label">Best Record</span>
+        <span class="score-number gold" id="bestDisplay">0</span>
+      </div>
+
+      <div class="score-divider"></div>
+
+      <!-- Hit Accuracy -->
+      <div class="score-box">
+        <span class="score-label">Accuracy</span>
+        <span class="score-number purple" id="accuracyDisplay">100%</span>
+      </div>
+    </div>
+
+    <!-- Active Speed / Wave Intensity Progress Indicator -->
+    <div class="timer-progress-wrap">
+      <div class="timer-progress-bar" id="timerProgressBar"></div>
+    </div>
+
+    <!-- 3x3 Mole Board Stage -->
+    <div class="stage-container" id="stageContainer">
+
+      <!-- 3x3 Hole Grid -->
+      <div class="mole-grid" id="moleGrid">
+        <!-- Hole 0 -->
+        <div class="hole-slot" data-index="0">
+          <div class="hole-pit"></div>
+          <div class="target-container"></div>
+          <div class="hole-front"></div>
+        </div>
+        <!-- Hole 1 -->
+        <div class="hole-slot" data-index="1">
+          <div class="hole-pit"></div>
+          <div class="target-container"></div>
+          <div class="hole-front"></div>
+        </div>
+        <!-- Hole 2 -->
+        <div class="hole-slot" data-index="2">
+          <div class="hole-pit"></div>
+          <div class="target-container"></div>
+          <div class="hole-front"></div>
+        </div>
+        <!-- Hole 3 -->
+        <div class="hole-slot" data-index="3">
+          <div class="hole-pit"></div>
+          <div class="target-container"></div>
+          <div class="hole-front"></div>
+        </div>
+        <!-- Hole 4 -->
+        <div class="hole-slot" data-index="4">
+          <div class="hole-pit"></div>
+          <div class="target-container"></div>
+          <div class="hole-front"></div>
+        </div>
+        <!-- Hole 5 -->
+        <div class="hole-slot" data-index="5">
+          <div class="hole-pit"></div>
+          <div class="target-container"></div>
+          <div class="hole-front"></div>
+        </div>
+        <!-- Hole 6 -->
+        <div class="hole-slot" data-index="6">
+          <div class="hole-pit"></div>
+          <div class="target-container"></div>
+          <div class="hole-front"></div>
+        </div>
+        <!-- Hole 7 -->
+        <div class="hole-slot" data-index="7">
+          <div class="hole-pit"></div>
+          <div class="target-container"></div>
+          <div class="hole-front"></div>
+        </div>
+        <!-- Hole 8 -->
+        <div class="hole-slot" data-index="8">
+          <div class="hole-pit"></div>
+          <div class="target-container"></div>
+          <div class="hole-front"></div>
+        </div>
+      </div>
+
+      <!-- Floating Feedback & Particle Layer -->
+      <div class="effects-layer" id="effectsLayer"></div>
+
+      <!-- Overlay: Start / Ready -->
+      <div class="game-overlay" id="startOverlay">
+        <div class="overlay-card">
+          <div class="overlay-icon">🔨</div>
+          <h2 class="overlay-title">Neon <span class="gradient-text">Whack-a-Mole</span></h2>
+          <p class="overlay-desc">Smash popping moles, catch golden bonuses, and avoid dangerous cyber-bombs before time expires!</p>
+
+          <div class="legend-cards">
+            <div class="legend-card">
+              <span class="legend-icon">🐹</span>
+              <div class="legend-info">
+                <strong>Cyber Mole</strong>
+                <span class="legend-pts cyan">+10 pts</span>
+              </div>
+            </div>
+            <div class="legend-card gold-legend">
+              <span class="legend-icon">👑</span>
+              <div class="legend-info">
+                <strong>Golden Mole</strong>
+                <span class="legend-pts gold">+50 pts</span>
+              </div>
+            </div>
+            <div class="legend-card bomb-legend">
+              <span class="legend-icon">💣</span>
+              <div class="legend-info">
+                <strong>Cyber Bomb</strong>
+                <span class="legend-pts red">-20 pts</span>
+              </div>
+            </div>
+          </div>
+
+          <button id="startBtn" class="game-action-btn start-pulse">
+            <span>⚡</span> Start Game (30s)
+          </button>
+        </div>
+      </div>
+
+      <!-- Overlay: Pause -->
+      <div class="game-overlay hidden" id="pauseOverlay">
+        <div class="overlay-card">
+          <div class="overlay-icon">⏸️</div>
+          <h2 class="overlay-title">Game <span class="gradient-text">Paused</span></h2>
+          <p class="overlay-desc">Catch your breath! The timer and moles are frozen.</p>
+          <div class="overlay-buttons">
+            <button id="resumeBtn" class="game-action-btn">
+              <span>▶️</span> Resume
+            </button>
+            <button id="pauseRestartBtn" class="secondary-action-btn">
+              <span>🔄</span> Restart
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Overlay: Game Over & Statistics -->
+      <div class="game-overlay hidden" id="gameOverOverlay">
+        <div class="overlay-card game-over-card">
+          <div class="overlay-icon" id="gameOverIcon">🏆</div>
+          <h2 class="overlay-title">Time's <span class="gradient-text">Up!</span></h2>
+          <p class="overlay-desc" id="gameOverMessage">Fantastic reflex workout!</p>
+
+          <div class="final-score-callout">
+            <span class="callout-label">FINAL SCORE</span>
+            <div class="callout-value" id="finalScoreVal">0</div>
+          </div>
+
+          <div id="newBestBadge" class="new-record-badge hidden">
+            ✨ New Personal Best! ✨
+          </div>
+
+          <!-- Comprehensive Stats Grid -->
+          <div class="modal-stats-grid">
+            <div class="modal-stat-item">
+              <span class="m-label">Best Record</span>
+              <strong id="finalBestVal" class="gold">0</strong>
+            </div>
+            <div class="modal-stat-item">
+              <span class="m-label">Hit Accuracy</span>
+              <strong id="finalAccuracyVal" class="purple">100%</strong>
+            </div>
+            <div class="modal-stat-item">
+              <span class="m-label">Moles Whacked</span>
+              <strong id="finalMolesVal" class="cyan">0</strong>
+            </div>
+            <div class="modal-stat-item">
+              <span class="m-label">Golden Bonuses</span>
+              <strong id="finalGoldenVal" class="gold">0</strong>
+            </div>
+            <div class="modal-stat-item">
+              <span class="m-label">Bombs Hit</span>
+              <strong id="finalBombsVal" class="red">0</strong>
+            </div>
+            <div class="modal-stat-item">
+              <span class="m-label">Difficulty</span>
+              <strong id="finalDiffVal" class="emerald">Easy</strong>
+            </div>
+          </div>
+
+          <div class="overlay-buttons">
+            <button id="playAgainBtn" class="game-action-btn start-pulse">
+              <span>🔄</span> Play Again
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Quick Action Control Bar (Pause, Restart) -->
+    <div class="game-controls-bar">
+      <button id="pauseToggleBtn" class="control-btn" title="Pause or Resume game" disabled>
+        <span id="pauseBtnIcon">⏸️</span>
+        <span id="pauseBtnLabel">Pause</span>
+      </button>
+      <button id="restartBtn" class="control-btn" title="Restart game">
+        <span>🔄</span>
+        <span>Restart</span>
+      </button>
+    </div>
+
+    <!-- Instructions / Guide Box -->
+    <footer class="game-guide-box">
+      <div class="guide-item">
+        <span class="guide-tag">How to Play</span>
+        <span>Click or tap moles as soon as they pop up from the cyber-holes before they burrow down.</span>
+      </div>
+      <div class="guide-item">
+        <span class="guide-tag">Scoring</span>
+        <span><strong>Cyber Mole:</strong> +10 pts &bull; <strong>Golden Mole:</strong> +50 pts &bull; <strong>Bomb:</strong> -20 pts (watch your step!).</span>
+      </div>
+      <div class="guide-item">
+        <span class="guide-tag">Speed Boost</span>
+        <span>Moles move faster and appear more frequently as the 30-second countdown winds down. Stay focused!</span>
+      </div>
+    </footer>
+  </main>
+
+  <!-- Audio Engine & Game Script -->
+  <script src="../../js/audio.js"></script>
+  <script src="whack-a-mole.js"></script>
+</body>
+</html>

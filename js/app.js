@@ -100,6 +100,30 @@ const GAMES_CATALOG = [
     scoreKey: 'playzone_score_space_shooter',
     scoreUnit: 'pts',
     path: 'games/space-shooter/index.html'
+  },
+  {
+    id: 'brick-breaker',
+    title: 'Brick Breaker',
+    category: 'arcade',
+    badge: 'Action',
+    difficulty: 'Medium',
+    icon: '🧱',
+    description: 'Bounce the ball, smash neon bricks, collect power-ups, and clear every level.',
+    scoreKey: 'playzone_score_brick_breaker',
+    scoreUnit: 'pts',
+    path: 'games/brick-breaker/index.html'
+  },
+  {
+    id: 'whack-a-mole',
+    title: 'Whack-a-Mole',
+    category: 'reflex',
+    badge: 'Reaction',
+    difficulty: 'Easy',
+    icon: '🔨',
+    description: 'Smash popping moles, catch golden bonuses, and avoid bombs in this fast reflex challenge.',
+    scoreKey: 'playzone_score_whack_a_mole',
+    scoreUnit: 'pts',
+    path: 'games/whack-a-mole/index.html'
   }
 ];
 
