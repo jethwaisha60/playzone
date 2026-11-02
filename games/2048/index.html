@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2048 Puzzle | PlayZone Arcade</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%230a0d14'/><path d='M9 13h14a5 5 0 0 1 5 5v2a3 3 0 0 1-5 2l-3-4h-8l-3 4a3 3 0 0 1-5-2v-2a5 5 0 0 1 5-5z' fill='%23121724' stroke='%2300f0ff' stroke-width='1.5'/><circle cx='21' cy='17' r='1' fill='%23ec4899'/><circle cx='24' cy='17' r='1' fill='%23a855f7'/><path d='M8 17h4m-2-2v4' stroke='%2300f0ff' stroke-width='1.2' stroke-linecap='round'/></svg>">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700;800&display=swap" rel="stylesheet">
+
+  <!-- Core Theme & Game Styles -->
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="2048.css">
+
+  <!-- Google AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1365345472330703" crossorigin="anonymous"></script>
+</head>
+<body class="puzzle2048-page">
+
+  <!-- Background decorative light orbs -->
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
+
+  <!-- Top Navigation Header -->
+  <header class="game-header">
+    <div class="game-nav-container">
+      <a href="../../index.html" class="back-link" id="backToHome">
+        <span class="back-arrow">←</span>
+        <span>Back to PlayZone</span>
+      </a>
+
+      <div class="game-title-wrap">
+        <span class="game-icon">🔢</span>
+        <h1 class="game-heading">2048 <span class="gradient-text">Puzzle</span></h1>
+      </div>
+
+      <!-- In-game Sound Toggle -->
+      <button id="soundToggle" class="icon-btn" aria-label="Toggle sound" title="Toggle Sound">
+        <span id="soundIcon">🔊</span>
+        <span class="btn-label">Sound</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Game Stage -->
+  <main class="game-wrapper">
+
+    <!-- Score & Stats Bar -->
+    <div class="scoreboard-card">
+      <div class="score-box current-score-box">
+        <span class="score-label">Score</span>
+        <div class="score-number-wrap">
+          <span class="score-number" id="currentScore">0</span>
+          <span class="score-add hidden" id="scoreAdd">+0</span>
+        </div>
+      </div>
+
+      <div class="score-divider"></div>
+
+      <div class="score-box best-score-box">
+        <span class="score-label">Best Record</span>
+        <span class="score-number gold" id="bestScore">0</span>
+      </div>
+
+      <div class="score-divider"></div>
+
+      <div class="score-box target-box">
+        <span class="score-label">Target</span>
+        <span class="score-number cyan" id="targetTile">2048</span>
+      </div>
+    </div>
+
+    <!-- Quick Action Control Bar (New Game, Undo) -->
+    <div class="game-actions-bar">
+      <button id="undoBtn" class="control-btn" disabled title="Undo last move">
+        <span>↩️</span>
+        <span>Undo</span>
+      </button>
+      <button id="newGameBtn" class="control-btn primary-action-btn" title="Start a fresh 2048 game">
+        <span>🔄</span>
+        <span>New Game</span>
+      </button>
+    </div>
+
+    <!-- 2048 Grid Board Stage -->
+    <div class="board-wrapper">
+      <div class="board-container" id="boardContainer" tabindex="0" role="application" aria-label="2048 Game Board">
+        <!-- Static 4x4 Grid Background Cells -->
+        <div class="grid-background">
+          <div class="grid-cell"></div>
+          <div class="grid-cell"></div>
+          <div class="grid-cell"></div>
+          <div class="grid-cell"></div>
+          <div class="grid-cell"></div>
+          <div class="grid-cell"></div>
+          <div class="grid-cell"></div>
+          <div class="grid-cell"></div>
+          <div class="grid-cell"></div>
+          <div class="grid-cell"></div>
+          <div class="grid-cell"></div>
+          <div class="grid-cell"></div>
+          <div class="grid-cell"></div>
+          <div class="grid-cell"></div>
+          <div class="grid-cell"></div>
+          <div class="grid-cell"></div>
+        </div>
+
+        <!-- Dynamic Animated Tile Layer -->
+        <div class="tile-layer" id="tileLayer"></div>
+
+        <!-- Overlay: Victory / 2048 Reached Modal -->
+        <div class="canvas-overlay hidden" id="winOverlay">
+          <div class="overlay-content">
+            <div class="overlay-icon">🏆</div>
+            <h2 class="overlay-title">2048 Reached!</h2>
+            <p class="overlay-desc">Phenomenal job! You merged the legendary cyber block.</p>
+
+            <div class="modal-stats">
+              <div class="modal-stat-item">
+                <span>Final Score</span>
+                <strong id="winScoreVal">0</strong>
+              </div>
+              <div class="modal-stat-item">
+                <span>Best Record</span>
+                <strong id="winBestVal" class="gold">0</strong>
+              </div>
+            </div>
+
+            <div class="modal-btn-row">
+              <button id="keepGoingBtn" class="game-action-btn secondary-btn">
+                <span>▶</span> Keep Playing
+              </button>
+              <button id="winRestartBtn" class="game-action-btn start-pulse">
+                <span>🔄</span> Play Again
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Overlay: Game Over Screen -->
+        <div class="canvas-overlay hidden" id="gameOverOverlay">
+          <div class="overlay-content">
+            <div class="overlay-icon">💀</div>
+            <h2 class="overlay-title">Game Over!</h2>
+            <p class="overlay-desc">No more valid moves remaining on the cyber grid.</p>
+
+            <div class="modal-stats">
+              <div class="modal-stat-item">
+                <span>Final Score</span>
+                <strong id="finalScoreVal">0</strong>
+              </div>
+              <div class="modal-stat-item">
+                <span>Best Record</span>
+                <strong id="finalBestVal" class="gold">0</strong>
+              </div>
+            </div>
+
+            <div id="newBestBadge" class="new-record-badge hidden">
+              🏆 New Personal Best!
+            </div>
+
+            <button id="retryBtn" class="game-action-btn start-pulse">
+              <span>🔄</span> Try Again
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile Virtual Touch D-Pad / Direction Controls -->
+    <div class="touch-controls-section" id="touchControls">
+      <div class="dpad-container">
+        <button class="dpad-btn dpad-up" id="dpadUp" aria-label="Slide Up">▲</button>
+        <div class="dpad-middle-row">
+          <button class="dpad-btn dpad-left" id="dpadLeft" aria-label="Slide Left">◀</button>
+          <div class="dpad-center">🔢</div>
+          <button class="dpad-btn dpad-right" id="dpadRight" aria-label="Slide Right">▶</button>
+        </div>
+        <button class="dpad-btn dpad-down" id="dpadDown" aria-label="Slide Down">▼</button>
+      </div>
+    </div>
+
+    <!-- Instructions / Shortcuts Guide Box -->
+    <footer class="game-guide-box">
+      <div class="guide-item">
+        <span class="guide-tag">Desktop</span>
+        <span>Use <strong>Arrow Keys</strong> or <strong>W A S D</strong> to slide tiles. Matching numbers merge into one.</span>
+      </div>
+      <div class="guide-item">
+        <span class="guide-tag">Mobile</span>
+        <span><strong>Swipe</strong> anywhere on the grid or tap the <strong>Direction Pad</strong> below.</span>
+      </div>
+    </footer>
+  </main>
+
+  <!-- Audio Engine & Game Script -->
+  <script src="../../js/audio.js"></script>
+  <script src="2048.js"></script>
+</body>
+</html>
