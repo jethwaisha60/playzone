@@ -119,7 +119,9 @@
   let wave = 1;
   let animationFrameId = null;
   let screenShake = 0;
-  let waveBannerTimer = 0;
+  let isWaveTransitioning = false;
+  let waveTransitionTimer = 0;
+  const WAVE_TRANSITION_DELAY = 120; // 120 frames = 2.0 seconds at 60 FPS
 
   // Starfield
   let stars = [];
@@ -335,17 +337,18 @@
 
     // Wave announcements
     addFloatingText(CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2 - 20, `WAVE ${waveNum}`, '#00f0ff', 28);
-    waveBannerTimer = 90;
 
-    const baseSpeed = 1.2 + Math.min(2.0, waveNum * 0.2);
+    // Difficulty scaling based on wave number
+    const baseSpeed = 1.2 + Math.min(3.0, (waveNum - 1) * 0.15);
+    const baseVy = Math.min(0.45, 0.12 + (waveNum - 1) * 0.025);
 
-    // Rows and columns based on wave level
+    // Rows and columns based on wave level (up to 5 rows, perfectly fitting 480x640)
     const rows = Math.min(5, 2 + Math.floor(waveNum / 2));
     const cols = 6;
     const startX = 40;
     const spacingX = 65;
-    const startY = 50;
-    const spacingY = 46;
+    const startY = 45;
+    const spacingY = 44;
 
     for (let r = 0; r < rows; r++) {
       for (let c = 0; c < cols; c++) {
@@ -356,24 +359,43 @@
         let w = 32;
         let h = 28;
 
-        // Wave composition
-        if (r === 0 && waveNum >= 3 && (c === 2 || c === 3)) {
-          // Heavy Dreadnought
-          type = 'dreadnought';
-          hp = 5 + Math.floor(waveNum * 0.8);
-          points = 500;
-          color = '#a855f7';
-          w = 46;
-          h = 38;
+        // Wave composition:
+        // Dreadnoughts appear on the top row for Wave >= 3
+        if (r === 0 && waveNum >= 3) {
+          if (waveNum >= 7 || (waveNum >= 5 && (c >= 1 && c <= 4)) || (c === 2 || c === 3)) {
+            type = 'dreadnought';
+            hp = 5 + Math.floor(waveNum * 0.7);
+            points = 500;
+            color = '#a855f7';
+            w = 46;
+            h = 38;
+          } else {
+            type = 'cruiser';
+            hp = 2 + Math.floor(waveNum / 3);
+            points = 250;
+            color = '#f59e0b';
+            w = 38;
+            h = 32;
+          }
         } else if (r <= 1 && waveNum >= 2) {
-          // Cruiser
+          // Cruisers on upper rows
           type = 'cruiser';
-          hp = 2 + (waveNum >= 4 ? 1 : 0);
+          hp = 2 + Math.floor(waveNum / 3);
           points = 250;
           color = '#f59e0b';
           w = 38;
           h = 32;
+        } else {
+          // Scouts
+          type = 'scout';
+          hp = 1 + (waveNum >= 8 ? 1 : 0);
+          points = 100;
+          color = '#ec4899';
+          w = 32;
+          h = 28;
         }
+
+        const shootCooldown = Math.max(45, 200 - waveNum * 10) + Math.floor(Math.random() * 90);
 
         enemies.push({
           x: startX + c * spacingX,
@@ -387,8 +409,8 @@
           points: points,
           color: color,
           vx: baseSpeed,
-          vy: 0.15,
-          shootCooldown: Math.floor(60 + Math.random() * 180),
+          vy: baseVy,
+          shootCooldown: shootCooldown,
           phase: Math.random() * Math.PI * 2
         });
       }
@@ -424,7 +446,7 @@
       enemy.shootCooldown--;
       if (enemy.shootCooldown <= 0) {
         shootEnemyLaser(enemy);
-        enemy.shootCooldown = Math.max(80, 220 - wave * 12) + Math.floor(Math.random() * 100);
+        enemy.shootCooldown = Math.max(45, 200 - wave * 10) + Math.floor(Math.random() * 90);
       }
     });
 
@@ -433,7 +455,10 @@
       enemies.forEach(enemy => {
         if (enemy.type === 'cruiser') {
           enemy.vx *= -1;
-          enemy.y += 10;
+          enemy.y += 8;
+          // Safeguard: Clamp position inside playfield
+          if (enemy.x <= 15) enemy.x = 16;
+          if (enemy.x >= CANVAS_WIDTH - enemy.w - 15) enemy.x = CANVAS_WIDTH - enemy.w - 16;
         }
       });
     }
@@ -441,9 +466,9 @@
     // Clean dead enemies
     enemies = enemies.filter(e => e.hp > 0);
 
-    // Wave Clear Check
-    if (enemies.length === 0 && gameState === 'playing' && waveBannerTimer <= 0) {
-      waveCleared();
+    // Wave Clear Check: automatically triggered whenever all enemies are destroyed
+    if (enemies.length === 0 && gameState === 'playing' && !isWaveTransitioning) {
+      triggerWaveClear();
     }
   }
 
@@ -911,17 +936,14 @@
   /**
    * Wave Progression
    */
-  function waveCleared() {
-    playSound('waveClear');
-    wave++;
-    waveDisplay.textContent = wave;
-    addFloatingText(CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2, 'SECTOR CLEARED!', '#10b981', 24);
+  function triggerWaveClear() {
+    if (isWaveTransitioning || gameState !== 'playing') return;
 
-    setTimeout(() => {
-      if (gameState === 'playing') {
-        spawnWave(wave);
-      }
-    }, 1200);
+    isWaveTransitioning = true;
+    waveTransitionTimer = WAVE_TRANSITION_DELAY; // 120 frames = 2.0s at 60 FPS
+    playSound('waveClear');
+    addFloatingText(CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2 - 25, `SECTOR ${wave} CLEARED!`, '#10b981', 26);
+    addFloatingText(CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2 + 15, 'NEXT WAVE INCOMING...', '#00f0ff', 16);
   }
 
   /**
@@ -929,6 +951,8 @@
    */
   function triggerGameOver() {
     gameState = 'gameover';
+    isWaveTransitioning = false;
+    waveTransitionTimer = 0;
     playSound('gameover');
 
     finalScoreVal.textContent = score;
@@ -964,6 +988,17 @@
       updatePowerups();
       updateParticles();
       updateFloatingTexts();
+
+      // Wave transition countdown (pauses automatically when game is paused)
+      if (isWaveTransitioning) {
+        waveTransitionTimer--;
+        if (waveTransitionTimer <= 0) {
+          isWaveTransitioning = false;
+          wave++;
+          waveDisplay.textContent = wave;
+          spawnWave(wave);
+        }
+      }
 
       // Screen Shake
       if (screenShake > 0) {
@@ -1012,6 +1047,8 @@
     powerups = [];
     particles = [];
     floatingTexts = [];
+    isWaveTransitioning = false;
+    waveTransitionTimer = 0;
 
     startOverlay.classList.add('hidden');
     pauseOverlay.classList.add('hidden');
