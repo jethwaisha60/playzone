@@ -88,6 +88,18 @@ const GAMES_CATALOG = [
     scoreKey: 'playzone_score_sudoku',
     scoreUnit: 's',
     path: 'games/sudoku/index.html'
+  },
+  {
+    id: 'space-shooter',
+    title: 'Space Shooter',
+    category: 'arcade',
+    badge: 'Action',
+    difficulty: 'Medium',
+    icon: '🚀',
+    description: 'Pilot your spaceship, defeat enemy waves, collect power-ups, and protect the galaxy.',
+    scoreKey: 'playzone_score_space_shooter',
+    scoreUnit: 'pts',
+    path: 'games/space-shooter/index.html'
   }
 ];
 
