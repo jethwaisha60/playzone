@@ -64,6 +64,18 @@ const GAMES_CATALOG = [
     scoreKey: 'playzone_score_2048',
     scoreUnit: 'pts',
     path: 'games/2048/index.html'
+  },
+  {
+    id: 'minesweeper',
+    title: 'Minesweeper',
+    category: 'puzzle',
+    badge: 'Logic',
+    difficulty: 'Medium',
+    icon: '💣',
+    description: 'Find hidden mines, reveal safe cells, and use number clues to clear the board.',
+    scoreKey: 'playzone_score_minesweeper',
+    scoreUnit: 's',
+    path: 'games/minesweeper/index.html'
   }
 ];
 
