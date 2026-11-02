@@ -52,6 +52,18 @@ const GAMES_CATALOG = [
     scoreKey: 'playzone_score_reaction',
     scoreUnit: 'ms',
     path: 'games/reaction-timer/index.html'
+  },
+  {
+    id: '2048',
+    title: '2048 Puzzle',
+    category: 'puzzle',
+    badge: 'Logic',
+    difficulty: 'Medium',
+    icon: '🔢',
+    description: 'Slide numbered tiles, merge matching numbers, and reach the 2048 tile in this addictive puzzle challenge.',
+    scoreKey: 'playzone_score_2048',
+    scoreUnit: 'pts',
+    path: 'games/2048/index.html'
   }
 ];
 
