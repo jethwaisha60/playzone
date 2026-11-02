@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Minesweeper | PlayZone Arcade</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%230a0d14'/><path d='M9 13h14a5 5 0 0 1 5 5v2a3 3 0 0 1-5 2l-3-4h-8l-3 4a3 3 0 0 1-5-2v-2a5 5 0 0 1 5-5z' fill='%23121724' stroke='%2300f0ff' stroke-width='1.5'/><circle cx='21' cy='17' r='1' fill='%23ec4899'/><circle cx='24' cy='17' r='1' fill='%23a855f7'/><path d='M8 17h4m-2-2v4' stroke='%2300f0ff' stroke-width='1.2' stroke-linecap='round'/></svg>">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700;800&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
+
+  <!-- Core Theme & Game Styles -->
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="minesweeper.css">
+
+  <!-- Google AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1365345472330703" crossorigin="anonymous"></script>
+</head>
+<body class="minesweeper-page">
+
+  <!-- Background decorative light orbs -->
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
+
+  <!-- Top Navigation Header -->
+  <header class="game-header">
+    <div class="game-nav-container">
+      <a href="../../index.html" class="back-link" id="backToHome">
+        <span class="back-arrow">←</span>
+        <span>Back to PlayZone</span>
+      </a>
+
+      <div class="game-title-wrap">
+        <span class="game-icon">💣</span>
+        <h1 class="game-heading">Cyber <span class="gradient-text">Minesweeper</span></h1>
+      </div>
+
+      <!-- In-game Sound Toggle -->
+      <button id="soundToggle" class="icon-btn" aria-label="Toggle sound" title="Toggle Sound">
+        <span id="soundIcon">🔊</span>
+        <span class="btn-label">Sound</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Game Stage -->
+  <main class="game-wrapper">
+
+    <!-- Score & Stats Bar -->
+    <div class="scoreboard-card">
+      <!-- Mines Remaining Counter -->
+      <div class="score-box">
+        <span class="score-label">Mines Left</span>
+        <div class="digital-display" id="minesLeft">010</div>
+      </div>
+
+      <div class="score-divider"></div>
+
+      <!-- Interactive Face Status / Quick Restart -->
+      <button class="status-face-btn" id="faceBtn" title="Restart Game" aria-label="Restart Game">
+        <span id="faceIcon">😊</span>
+      </button>
+
+      <div class="score-divider"></div>
+
+      <!-- Elapsed Timer -->
+      <div class="score-box">
+        <span class="score-label">Time</span>
+        <div class="digital-display" id="timerDisplay">000</div>
+      </div>
+
+      <div class="score-divider"></div>
+
+      <!-- Best Time Record -->
+      <div class="score-box best-score-box">
+        <span class="score-label">Best Record</span>
+        <span class="score-number gold" id="bestScoreDisplay">--</span>
+      </div>
+    </div>
+
+    <!-- Quick Action Control Bar (New Game, Mobile Flag Mode Toggle) -->
+    <div class="game-actions-bar">
+      <button id="flagModeToggleBtn" class="control-btn flag-mode-btn" title="Toggle Flagging Mode for touch/clicks">
+        <span class="flag-icon">🚩</span>
+        <span id="flagModeLabel">Flag: OFF</span>
+      </button>
+      <button id="newGameBtn" class="control-btn primary-action-btn" title="Start a fresh 9x9 game">
+        <span>🔄</span>
+        <span>New Game</span>
+      </button>
+    </div>
+
+    <!-- Minesweeper Board Stage -->
+    <div class="board-wrapper">
+      <div class="board-container" id="boardContainer">
+        <!-- 9x9 Grid Cells Layer -->
+        <div class="mines-grid" id="minesGrid" role="grid" aria-label="Minesweeper 9x9 Grid"></div>
+
+        <!-- Overlay: Victory Screen -->
+        <div class="canvas-overlay hidden" id="winOverlay">
+          <div class="overlay-content">
+            <div class="overlay-icon">🏆</div>
+            <h2 class="overlay-title">Grid Cleared!</h2>
+            <p class="overlay-desc">Brilliant deduction! All 10 cyber mines were safely isolated.</p>
+
+            <div class="modal-stats">
+              <div class="modal-stat-item">
+                <span>Time Taken</span>
+                <strong id="winTimeVal" class="cyan">0s</strong>
+              </div>
+              <div class="modal-stat-item">
+                <span>Best Record</span>
+                <strong id="winBestVal" class="gold">--</strong>
+              </div>
+            </div>
+
+            <div id="newBestBadge" class="new-record-badge hidden">
+              ⚡ New Personal Record!
+            </div>
+
+            <div class="modal-btn-row">
+              <button id="winViewBoardBtn" class="game-action-btn secondary-btn">
+                <span>🔍</span> View Field
+              </button>
+              <button id="winPlayAgainBtn" class="game-action-btn start-pulse">
+                <span>🔄</span> Play Again
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Overlay: Game Over Screen -->
+        <div class="canvas-overlay hidden" id="gameOverOverlay">
+          <div class="overlay-content">
+            <div class="overlay-icon">💥</div>
+            <h2 class="overlay-title">Mine Detonated!</h2>
+            <p class="overlay-desc">A hidden cyber-mine was triggered. The grid has destabilized.</p>
+
+            <div class="modal-stats">
+              <div class="modal-stat-item">
+                <span>Time Survived</span>
+                <strong id="finalTimeVal">0s</strong>
+              </div>
+              <div class="modal-stat-item">
+                <span>Best Record</span>
+                <strong id="finalBestVal" class="gold">--</strong>
+              </div>
+            </div>
+
+            <div class="modal-btn-row">
+              <button id="loseViewBoardBtn" class="game-action-btn secondary-btn">
+                <span>🔍</span> View Field
+              </button>
+              <button id="retryBtn" class="game-action-btn start-pulse">
+                <span>🔄</span> Try Again
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Instructions / Shortcuts Guide Box -->
+    <footer class="game-guide-box">
+      <div class="guide-item">
+        <span class="guide-tag">Desktop</span>
+        <span><strong>Left Click</strong> to reveal safe cells. <strong>Right Click</strong> to plant/remove flags. Click a revealed number to <strong>quick-reveal</strong> neighbors when flags match.</span>
+      </div>
+      <div class="guide-item">
+        <span class="guide-tag">Mobile</span>
+        <span>Tap to reveal cells. Toggle <strong>Flag Mode</strong> button (or <strong>long-press</strong>) to place/remove flags without triggering mines.</span>
+      </div>
+    </footer>
+  </main>
+
+  <!-- Audio Engine & Game Script -->
+  <script src="../../js/audio.js"></script>
+  <script src="minesweeper.js"></script>
+</body>
+</html>
