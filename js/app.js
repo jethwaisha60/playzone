@@ -148,6 +148,30 @@ const GAMES_CATALOG = [
     scoreKey: 'playzone_score_connect_four',
     scoreUnit: 'wins',
     path: 'games/connect-four/index.html'
+  },
+  {
+    id: 'word-guess',
+    title: 'Word Guess',
+    category: 'puzzle',
+    badge: 'Brain Game',
+    difficulty: 'Medium',
+    icon: '🔤',
+    description: 'Guess the hidden five-letter word in six attempts using color clues.',
+    scoreKey: 'playzone_score_word_guess',
+    scoreUnit: 'wins',
+    path: 'games/word-guess/index.html'
+  },
+  {
+    id: 'endless-runner',
+    title: 'Endless Runner',
+    category: 'arcade',
+    badge: 'Endless',
+    difficulty: 'Medium',
+    icon: '🏃',
+    description: 'Run through a neon world, dodge obstacles, collect coins, and beat your distance record.',
+    scoreKey: 'playzone_score_endless_runner',
+    scoreUnit: 'pts',
+    path: 'games/endless-runner/index.html'
   }
 ];
 
