@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Endless Runner | PlayZone Arcade</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%230a0d14'/><path d='M9 13h14a5 5 0 0 1 5 5v2a3 3 0 0 1-5 2l-3-4h-8l-3 4a3 3 0 0 1-5-2v-2a5 5 0 0 1 5-5z' fill='%23121724' stroke='%2300f0ff' stroke-width='1.5'/><circle cx='21' cy='17' r='1' fill='%23ec4899'/><circle cx='24' cy='17' r='1' fill='%23a855f7'/><path d='M8 17h4m-2-2v4' stroke='%2300f0ff' stroke-width='1.2' stroke-linecap='round'/></svg>">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700;800&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
+
+  <!-- Core Theme & Game Styles -->
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="endless-runner.css">
+
+  <!-- Google AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1365345472330703" crossorigin="anonymous"></script>
+</head>
+<body class="runner-page">
+
+  <!-- Background decorative light orbs -->
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
+
+  <!-- Top Navigation Header -->
+  <header class="game-header">
+    <div class="game-nav-container">
+      <a href="../../index.html" class="back-link" id="backToHome">
+        <span class="back-arrow">←</span>
+        <span class="back-label-full">Back to PlayZone</span>
+        <span class="back-label-short">Back</span>
+      </a>
+
+      <div class="game-title-wrap">
+        <span class="game-icon">🏃</span>
+        <h1 class="game-heading">Endless <span class="gradient-text">Runner</span></h1>
+      </div>
+
+      <!-- In-game Sound Toggle -->
+      <button id="soundToggle" class="icon-btn" aria-label="Toggle sound" title="Toggle Sound">
+        <span id="soundIcon">🔊</span>
+        <span class="btn-label">Sound</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Game Stage -->
+  <main class="game-wrapper">
+
+    <!-- Score & Stats Bar -->
+    <div class="scoreboard-card">
+      <!-- Total Score -->
+      <div class="score-box">
+        <span class="score-label">Score</span>
+        <span class="score-number cyan" id="scoreDisplay">0</span>
+      </div>
+
+      <div class="score-divider"></div>
+
+      <!-- Distance -->
+      <div class="score-box">
+        <span class="score-label">Distance</span>
+        <span class="score-number emerald" id="distanceDisplay">0 m</span>
+      </div>
+
+      <div class="score-divider"></div>
+
+      <!-- Coins -->
+      <div class="score-box">
+        <span class="score-label">Coins</span>
+        <span class="score-number gold" id="coinsDisplay">0</span>
+      </div>
+
+      <div class="score-divider"></div>
+
+      <!-- Best Score -->
+      <div class="score-box">
+        <span class="score-label">Best Record</span>
+        <span class="score-number purple" id="bestScoreDisplay">0</span>
+      </div>
+
+      <div class="score-divider"></div>
+
+      <!-- Speed -->
+      <div class="score-box speed-box">
+        <span class="score-label">Speed</span>
+        <span class="score-number" id="speedDisplay">1.0x</span>
+      </div>
+    </div>
+
+    <!-- Active Power-up Status Banner -->
+    <div class="powerup-banner hidden" id="powerupBanner">
+      <div class="powerup-pill" id="shieldPill">
+        <span>🛡️</span> Shield Active
+      </div>
+      <div class="powerup-pill magnet" id="magnetPill">
+        <span>🧲</span> Magnet Active (<span id="magnetTimer">10s</span>)
+      </div>
+    </div>
+
+    <!-- Canvas Frame Container with Interactive Overlays -->
+    <div class="canvas-container" id="canvasContainer">
+      <canvas id="gameCanvas" width="640" height="360"></canvas>
+
+      <!-- Overlay: Start / Mission Launch Screen -->
+      <div class="canvas-overlay" id="startOverlay">
+        <div class="overlay-content">
+          <div class="overlay-icon">🏃</div>
+          <h2 class="overlay-title">Neon <span class="gradient-text">Cyber Runner</span></h2>
+          <p class="overlay-desc">Sprint across neon rooftops, vault over ground obstacles, and slide beneath high laser barriers!</p>
+
+          <div class="intel-box">
+            <div class="intel-item"><span>⬆️ Jump</span><span>Space / ↑ / Tap Jump</span></div>
+            <div class="intel-item"><span>⬇️ Slide</span><span>Down Arrow / Tap Slide</span></div>
+            <div class="intel-item"><span>🟡 Collectibles</span><span>+10 pts per Coin</span></div>
+            <div class="intel-item"><span>🛡️ Shield & 🧲 Magnet</span><span>Power-up modules</span></div>
+          </div>
+
+          <button id="startBtn" class="game-action-btn start-pulse">
+            <span>⚡</span> Start Run
+          </button>
+          <p class="overlay-hint">or press <kbd>Space</kbd> / <kbd>↑</kbd> to launch</p>
+        </div>
+      </div>
+
+      <!-- Overlay: Pause Screen -->
+      <div class="canvas-overlay hidden" id="pauseOverlay">
+        <div class="overlay-content">
+          <div class="overlay-icon">⏸️</div>
+          <h2 class="overlay-title">Run <span class="gradient-text">Paused</span></h2>
+          <p class="overlay-desc">Thrusters in standby. The cyber-metropolis is holding position.</p>
+          <div class="overlay-buttons">
+            <button id="resumeBtn" class="game-action-btn">
+              <span>▶</span> Resume Run
+            </button>
+            <button id="pauseRestartBtn" class="secondary-action-btn">
+              <span>🔄</span> Restart
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Overlay: Game Over Screen -->
+      <div class="canvas-overlay hidden" id="gameOverOverlay">
+        <div class="overlay-content game-over-content">
+          <div class="overlay-icon" id="gameOverIcon">💥</div>
+          <h2 class="overlay-title">Run <span class="gradient-text">Terminated!</span></h2>
+          <p class="overlay-desc" id="gameOverMessage">You collided with an obstacle.</p>
+
+          <div class="final-score-callout">
+            <span class="callout-label">FINAL SCORE</span>
+            <div class="callout-value" id="finalScoreVal">0</div>
+          </div>
+
+          <div id="newBestBadge" class="new-record-badge hidden">
+            ✨ New Personal Best! ✨
+          </div>
+
+          <div class="modal-stats-grid">
+            <div class="modal-stat-item">
+              <span class="m-label">Best Record</span>
+              <strong id="finalBestVal" class="purple">0</strong>
+            </div>
+            <div class="modal-stat-item">
+              <span class="m-label">Distance</span>
+              <strong id="finalDistVal" class="emerald">0 m</strong>
+            </div>
+            <div class="modal-stat-item">
+              <span class="m-label">Coins Collected</span>
+              <strong id="finalCoinsVal" class="gold">0</strong>
+            </div>
+            <div class="modal-stat-item">
+              <span class="m-label">Max Speed</span>
+              <strong id="finalSpeedVal" class="cyan">1.0x</strong>
+            </div>
+          </div>
+
+          <div class="overlay-buttons">
+            <button id="playAgainBtn" class="game-action-btn start-pulse">
+              <span>🔄</span> Run Again
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Action Control Bar (Pause, Restart) -->
+    <div class="game-controls-bar">
+      <button id="pauseToggleBtn" class="control-btn" title="Pause or Resume run" disabled>
+        <span id="pauseBtnIcon">⏸️</span>
+        <span id="pauseBtnLabel">Pause</span>
+      </button>
+      <button id="restartBtn" class="control-btn" title="Restart run">
+        <span>🔄</span>
+        <span>Restart</span>
+      </button>
+    </div>
+
+    <!-- Mobile Virtual Touch Buttons (Slide & Jump) -->
+    <div class="mobile-controls-bar" id="mobileControls">
+      <button class="mobile-touch-btn slide-btn" id="mobileSlideBtn" aria-label="Slide Down">
+        <span class="touch-icon">⬇️</span>
+        <span class="touch-label">SLIDE</span>
+      </button>
+      <button class="mobile-touch-btn jump-btn" id="mobileJumpBtn" aria-label="Jump Up">
+        <span class="touch-icon">⬆️</span>
+        <span class="touch-label">JUMP</span>
+      </button>
+    </div>
+
+    <!-- Instructions / Guide Box -->
+    <footer class="game-guide-box">
+      <div class="guide-item">
+        <span class="guide-tag">Desktop</span>
+        <span><strong>Jump:</strong> <kbd>Space</kbd> / <kbd>↑</kbd> / <kbd>W</kbd> &bull; <strong>Slide:</strong> <kbd>↓</kbd> / <kbd>S</kbd> &bull; <strong>Pause:</strong> <kbd>P</kbd> / <kbd>Esc</kbd>.</span>
+      </div>
+      <div class="guide-item">
+        <span class="guide-tag">Mobile</span>
+        <span>Use the on-screen <strong>SLIDE</strong> and <strong>JUMP</strong> buttons below, or <strong>swipe up/down</strong> directly on the screen.</span>
+      </div>
+      <div class="guide-item">
+        <span class="guide-tag">Obstacles</span>
+        <span>Jump over <strong>ground barriers and plasma crates</strong>. Slide beneath <strong>high laser gates</strong>!</span>
+      </div>
+    </footer>
+  </main>
+
+  <!-- Audio Engine & Game Script -->
+  <script src="../../js/audio.js"></script>
+  <script src="endless-runner.js"></script>
+</body>
+</html>

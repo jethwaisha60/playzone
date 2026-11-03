@@ -1,0 +1,753 @@
+/* ===================================================================
+   PlayZone - Neon Endless Runner Custom Stylesheet
+   Mobile-Optimized Responsive Dark Neon Arcade Styling
+   =================================================================== */
+
+:root {
+  --canvas-max-width: 580px;
+  --board-radius: 18px;
+}
+
+.runner-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg-primary);
+  color: var(--text-main);
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  overflow-x: hidden;
+}
+
+/* ===================================================================
+   Header & Navigation
+   =================================================================== */
+.game-header {
+  background: rgba(10, 13, 20, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border-color);
+  padding: 0.75rem 1rem;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.game-nav-container {
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 0.88rem;
+  font-weight: 600;
+  padding: 0.45rem 0.85rem;
+  border-radius: 999px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  transition: var(--transition-normal);
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.back-link:hover {
+  color: var(--neon-cyan);
+  border-color: var(--neon-cyan);
+  box-shadow: 0 0 12px rgba(0, 240, 255, 0.25);
+  transform: translateX(-2px);
+}
+
+.back-label-short {
+  display: none;
+}
+
+.game-title-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-width: 0;
+  flex: 1;
+  text-align: center;
+}
+
+.game-icon {
+  font-size: 1.5rem;
+  filter: drop-shadow(0 0 10px rgba(0, 240, 255, 0.5));
+  flex-shrink: 0;
+}
+
+.game-heading {
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, var(--neon-cyan) 0%, var(--neon-purple) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+#soundToggle {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+/* ===================================================================
+   Main Content Layout
+   =================================================================== */
+.game-wrapper {
+  max-width: 620px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0.5rem 0.75rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+/* ===================================================================
+   Scoreboard Card
+   =================================================================== */
+.scoreboard-card {
+  max-width: var(--canvas-max-width);
+  width: 100%;
+  margin: 0.2rem auto 0.45rem;
+  background: rgba(18, 23, 36, 0.85);
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  padding: 0.55rem 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  box-sizing: border-box;
+}
+
+.score-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.1rem;
+  flex: 1;
+}
+
+.score-label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.score-number {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.12rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  white-space: nowrap;
+}
+
+.score-number.cyan {
+  color: var(--neon-cyan);
+  text-shadow: 0 0 12px rgba(0, 240, 255, 0.5);
+}
+
+.score-number.emerald {
+  color: var(--neon-emerald);
+  text-shadow: 0 0 12px rgba(16, 185, 129, 0.5);
+}
+
+.score-number.gold {
+  color: #fbbf24;
+  text-shadow: 0 0 12px rgba(251, 191, 36, 0.5);
+}
+
+.score-number.purple {
+  color: var(--neon-purple);
+  text-shadow: 0 0 12px rgba(168, 85, 247, 0.5);
+}
+
+.score-divider {
+  width: 1px;
+  height: 24px;
+  background: var(--border-color);
+  opacity: 0.6;
+  flex-shrink: 0;
+}
+
+/* Active Power-up Pill Banner */
+.powerup-banner {
+  max-width: var(--canvas-max-width);
+  width: 100%;
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.45rem;
+  justify-content: center;
+}
+
+.powerup-banner.hidden {
+  display: none !important;
+}
+
+.powerup-pill {
+  background: rgba(0, 240, 255, 0.15);
+  border: 1px solid var(--neon-cyan);
+  color: #fff;
+  border-radius: 999px;
+  padding: 0.25rem 0.8rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  box-shadow: 0 0 10px rgba(0, 240, 255, 0.3);
+}
+
+.powerup-pill.magnet {
+  background: rgba(245, 158, 11, 0.15);
+  border-color: #fbbf24;
+  box-shadow: 0 0 10px rgba(251, 191, 36, 0.3);
+}
+
+/* ===================================================================
+   Canvas Frame Container
+   =================================================================== */
+.canvas-container {
+  width: 100%;
+  max-width: var(--canvas-max-width);
+  aspect-ratio: 16 / 9;
+  position: relative;
+  border-radius: var(--board-radius);
+  overflow: hidden;
+  border: 2px solid rgba(0, 240, 255, 0.4);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.75), 0 0 28px rgba(0, 240, 255, 0.15);
+  background: #060814;
+  box-sizing: border-box;
+}
+
+#gameCanvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  touch-action: none;
+  cursor: pointer;
+}
+
+/* ===================================================================
+   Canvas Overlays (Start, Pause, Game Over)
+   =================================================================== */
+.canvas-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 13, 20, 0.9);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 0.85rem;
+  z-index: 20;
+  box-sizing: border-box;
+  overflow-y: auto;
+  transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+
+.canvas-overlay.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.overlay-content {
+  text-align: center;
+  max-width: 340px;
+  width: 100%;
+  margin: auto;
+  animation: modal-enter 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards;
+}
+
+@keyframes modal-enter {
+  from { transform: scale(0.92) translateY(10px); opacity: 0; }
+  to { transform: scale(1) translateY(0); opacity: 1; }
+}
+
+.overlay-icon {
+  font-size: 2.3rem;
+  margin-bottom: 0.2rem;
+  line-height: 1;
+  filter: drop-shadow(0 0 12px rgba(0, 240, 255, 0.5));
+}
+
+.overlay-title {
+  font-size: 1.35rem;
+  font-weight: 800;
+  margin: 0 0 0.25rem;
+  letter-spacing: -0.02em;
+}
+
+.overlay-desc {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  line-height: 1.35;
+  margin: 0 0 0.75rem;
+}
+
+/* Intel / Instruction mini cards */
+.intel-box {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.35rem;
+  margin-bottom: 0.95rem;
+  text-align: left;
+}
+
+.intel-item {
+  display: flex;
+  flex-direction: column;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  padding: 0.35rem 0.55rem;
+  font-size: 0.75rem;
+}
+
+.intel-item span:first-child { font-weight: 700; color: var(--text-main); }
+.intel-item span:last-child { color: var(--neon-cyan); font-size: 0.72rem; }
+
+.overlay-hint {
+  font-size: 0.74rem;
+  color: var(--text-muted);
+  margin-top: 0.5rem;
+}
+
+.overlay-hint kbd {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0.15rem 0.35rem;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: var(--neon-cyan);
+  font-size: 0.72rem;
+}
+
+/* Buttons */
+.game-action-btn {
+  background: linear-gradient(135deg, var(--neon-cyan) 0%, var(--neon-purple) 100%);
+  color: #05070d;
+  font-weight: 800;
+  font-size: 0.95rem;
+  border: none;
+  border-radius: 12px;
+  padding: 0.7rem 1.4rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  box-shadow: 0 4px 18px rgba(0, 240, 255, 0.35);
+  transition: all 0.2s ease;
+  width: 100%;
+  font-family: inherit;
+  box-sizing: border-box;
+}
+
+.game-action-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(0, 240, 255, 0.55);
+}
+
+.game-action-btn:active {
+  transform: translateY(1px);
+}
+
+.secondary-action-btn {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-main);
+  font-weight: 700;
+  font-size: 0.92rem;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 0.65rem 1.25rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
+  font-family: inherit;
+  box-sizing: border-box;
+}
+
+.secondary-action-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: var(--neon-cyan);
+}
+
+.overlay-buttons {
+  display: flex;
+  gap: 0.65rem;
+  width: 100%;
+}
+
+.overlay-buttons button {
+  flex: 1;
+}
+
+.start-pulse {
+  animation: btn-glow 1.5s infinite alternate;
+}
+
+@keyframes btn-glow {
+  from { box-shadow: 0 4px 14px rgba(0, 240, 255, 0.3); }
+  to { box-shadow: 0 6px 26px rgba(0, 240, 255, 0.65); }
+}
+
+/* Final Score Callout */
+.final-score-callout {
+  background: linear-gradient(135deg, rgba(0, 240, 255, 0.08), rgba(168, 85, 247, 0.08));
+  border: 1px solid rgba(0, 240, 255, 0.25);
+  border-radius: 12px;
+  padding: 0.55rem 0.85rem;
+  margin-bottom: 0.65rem;
+}
+
+.callout-label {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  font-weight: 700;
+}
+
+.callout-value {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--neon-cyan);
+  text-shadow: 0 0 16px rgba(0, 240, 255, 0.6);
+  line-height: 1.1;
+  margin-top: 0.1rem;
+}
+
+.new-record-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, #f59e0b, #ec4899);
+  color: #fff;
+  font-size: 0.76rem;
+  font-weight: 800;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  margin-bottom: 0.65rem;
+  box-shadow: 0 0 12px rgba(245, 158, 11, 0.5);
+  animation: pulse-alert 0.8s infinite alternate;
+}
+
+@keyframes pulse-alert {
+  from { transform: scale(1); opacity: 1; }
+  to { transform: scale(1.08); opacity: 0.8; }
+}
+
+/* Modal Stats Grid */
+.modal-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.4rem;
+  margin-bottom: 0.85rem;
+}
+
+.modal-stat-item {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 8px;
+  padding: 0.4rem 0.45rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.modal-stat-item .m-label {
+  font-size: 0.64rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.modal-stat-item strong {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.98rem;
+  font-weight: 700;
+}
+
+.modal-stat-item strong.cyan { color: var(--neon-cyan); }
+.modal-stat-item strong.emerald { color: var(--neon-emerald); }
+.modal-stat-item strong.gold { color: #fbbf24; }
+.modal-stat-item strong.purple { color: var(--neon-purple); }
+
+/* ===================================================================
+   Quick Action Control Bar (Pause, Restart)
+   =================================================================== */
+.game-controls-bar {
+  max-width: var(--canvas-max-width);
+  width: 100%;
+  margin: 0.65rem auto 0;
+  display: flex;
+  gap: 0.65rem;
+  justify-content: center;
+}
+
+.control-btn {
+  background: rgba(18, 23, 36, 0.85);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+  padding: 0.55rem 1.3rem;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.control-btn:hover:not(:disabled) {
+  border-color: var(--neon-cyan);
+  color: var(--neon-cyan);
+  box-shadow: 0 0 14px rgba(0, 240, 255, 0.2);
+  transform: translateY(-1px);
+}
+
+.control-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ===================================================================
+   Mobile Virtual Touch Buttons (Slide & Jump)
+   =================================================================== */
+.mobile-controls-bar {
+  max-width: var(--canvas-max-width);
+  width: 100%;
+  margin: 0.65rem auto 0;
+  display: none;
+  gap: 0.65rem;
+}
+
+.mobile-touch-btn {
+  flex: 1;
+  border-radius: 14px;
+  padding: 0.85rem 1rem;
+  font-size: 1rem;
+  font-weight: 800;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  touch-action: manipulation;
+  font-family: inherit;
+  letter-spacing: 0.05em;
+  transition: all 0.12s ease;
+  box-sizing: border-box;
+}
+
+.mobile-touch-btn.jump-btn {
+  background: linear-gradient(135deg, rgba(0, 240, 255, 0.2), rgba(0, 240, 255, 0.35));
+  border: 1.5px solid var(--neon-cyan);
+  color: #fff;
+  box-shadow: 0 0 16px rgba(0, 240, 255, 0.3);
+}
+
+.mobile-touch-btn.slide-btn {
+  background: linear-gradient(135deg, rgba(168, 85, 247, 0.2), rgba(168, 85, 247, 0.35));
+  border: 1.5px solid var(--neon-purple);
+  color: #fff;
+  box-shadow: 0 0 16px rgba(168, 85, 247, 0.3);
+}
+
+.mobile-touch-btn:active {
+  transform: scale(0.96);
+  filter: brightness(1.2);
+}
+
+/* ===================================================================
+   Guide / Instructions Box
+   =================================================================== */
+.game-guide-box {
+  max-width: var(--canvas-max-width);
+  width: 100%;
+  margin: 1.1rem auto 2.5rem;
+  background: rgba(18, 23, 36, 0.6);
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  padding: 0.75rem 0.95rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.guide-item {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  line-height: 1.4;
+}
+
+.guide-tag {
+  background: rgba(0, 240, 255, 0.12);
+  color: var(--neon-cyan);
+  border: 1px solid rgba(0, 240, 255, 0.25);
+  padding: 0.15rem 0.45rem;
+  border-radius: 6px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* ===================================================================
+   Mobile Responsiveness (Targeted Breakpoints)
+   =================================================================== */
+@media (max-width: 768px) {
+  .mobile-controls-bar {
+    display: flex;
+  }
+}
+
+@media (max-width: 540px) {
+  .game-header {
+    padding: 0.55rem 0.75rem;
+  }
+
+  .game-nav-container {
+    gap: 0.4rem;
+  }
+
+  .back-label-full {
+    display: none;
+  }
+
+  .back-label-short {
+    display: inline;
+  }
+
+  .back-link {
+    padding: 0.35rem 0.65rem;
+    font-size: 0.82rem;
+  }
+
+  .game-icon {
+    font-size: 1.25rem;
+  }
+
+  .game-heading {
+    font-size: 1.05rem;
+  }
+
+  #soundToggle .btn-label {
+    display: none;
+  }
+
+  #soundToggle {
+    padding: 0.35rem 0.6rem;
+    min-width: unset;
+  }
+
+  .game-wrapper {
+    padding: 0.4rem 0.6rem 2rem;
+  }
+
+  .scoreboard-card {
+    padding: 0.45rem 0.45rem;
+    margin-bottom: 0.4rem;
+    border-radius: 12px;
+  }
+
+  .score-number {
+    font-size: 0.95rem;
+  }
+
+  .score-label {
+    font-size: 0.58rem;
+  }
+
+  .score-divider {
+    height: 20px;
+  }
+
+  .canvas-container {
+    border-radius: 14px;
+  }
+
+  .overlay-content {
+    max-width: 300px;
+  }
+
+  .overlay-icon {
+    font-size: 2rem;
+  }
+
+  .overlay-title {
+    font-size: 1.25rem;
+  }
+
+  .callout-value {
+    font-size: 1.75rem;
+  }
+
+  .mobile-touch-btn {
+    padding: 0.75rem 0.8rem;
+    font-size: 0.92rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .game-heading {
+    font-size: 0.94rem;
+  }
+
+  .back-label-short {
+    display: none;
+  }
+
+  .back-link {
+    padding: 0.35rem 0.55rem;
+  }
+
+  .score-box.speed-box {
+    display: none;
+  }
+
+  .score-number {
+    font-size: 0.88rem;
+  }
+
+  .score-label {
+    font-size: 0.54rem;
+  }
+}
