@@ -124,6 +124,18 @@ const GAMES_CATALOG = [
     scoreKey: 'playzone_score_whack_a_mole',
     scoreUnit: 'pts',
     path: 'games/whack-a-mole/index.html'
+  },
+  {
+    id: 'flappy',
+    title: 'Flappy Challenge',
+    category: 'arcade',
+    badge: 'Endless',
+    difficulty: 'Easy',
+    icon: '🐦',
+    description: 'Fly through challenging pipe gaps, avoid obstacles, and beat your highest score.',
+    scoreKey: 'playzone_score_flappy',
+    scoreUnit: 'pts',
+    path: 'games/flappy/index.html'
   }
 ];
 

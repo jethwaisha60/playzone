@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flappy Challenge | PlayZone Arcade</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%230a0d14'/><path d='M9 13h14a5 5 0 0 1 5 5v2a3 3 0 0 1-5 2l-3-4h-8l-3 4a3 3 0 0 1-5-2v-2a5 5 0 0 1 5-5z' fill='%23121724' stroke='%2300f0ff' stroke-width='1.5'/><circle cx='21' cy='17' r='1' fill='%23ec4899'/><circle cx='24' cy='17' r='1' fill='%23a855f7'/><path d='M8 17h4m-2-2v4' stroke='%2300f0ff' stroke-width='1.2' stroke-linecap='round'/></svg>">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700;800&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
+
+  <!-- Core Theme & Game Styles -->
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="flappy.css">
+
+  <!-- Google AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1365345472330703" crossorigin="anonymous"></script>
+</head>
+<body class="flappy-page">
+
+  <!-- Background decorative light orbs -->
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
+
+  <!-- Top Navigation Header -->
+  <header class="game-header">
+    <div class="game-nav-container">
+      <a href="../../index.html" class="back-link" id="backToHome">
+        <span class="back-arrow">←</span>
+        <span class="back-label-full">Back to PlayZone</span>
+        <span class="back-label-short">Back</span>
+      </a>
+
+      <div class="game-title-wrap">
+        <span class="game-icon">🐦</span>
+        <h1 class="game-heading">Flappy <span class="gradient-text">Challenge</span></h1>
+      </div>
+
+      <!-- In-game Sound Toggle -->
+      <button id="soundToggle" class="icon-btn" aria-label="Toggle sound" title="Toggle Sound">
+        <span id="soundIcon">🔊</span>
+        <span class="btn-label">Sound</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Game Stage -->
+  <main class="game-wrapper">
+
+    <!-- Difficulty Selector Bar -->
+    <div class="difficulty-bar">
+      <span class="diff-label">Difficulty:</span>
+      <div class="diff-tabs" id="difficultyTabs">
+        <button class="diff-tab active" data-difficulty="easy">🌱 Easy</button>
+        <button class="diff-tab" data-difficulty="medium">⚡ Medium</button>
+        <button class="diff-tab" data-difficulty="hard">🔥 Hard</button>
+      </div>
+    </div>
+
+    <!-- Score & Stats Bar -->
+    <div class="scoreboard-card">
+      <!-- Current Score -->
+      <div class="score-box">
+        <span class="score-label">Score</span>
+        <span class="score-number cyan" id="scoreDisplay">0</span>
+      </div>
+
+      <div class="score-divider"></div>
+
+      <!-- Best High Score -->
+      <div class="score-box">
+        <span class="score-label">Best Record</span>
+        <span class="score-number gold" id="bestScoreDisplay">0</span>
+      </div>
+
+      <div class="score-divider"></div>
+
+      <!-- Pipes Cleared -->
+      <div class="score-box">
+        <span class="score-label">Pipes Cleared</span>
+        <span class="score-number emerald" id="pipesDisplay">0</span>
+      </div>
+
+      <div class="score-divider"></div>
+
+      <!-- Game Speed Multiplier -->
+      <div class="score-box">
+        <span class="score-label">Speed</span>
+        <span class="score-number purple" id="speedDisplay">1.0x</span>
+      </div>
+    </div>
+
+    <!-- Canvas Frame Container with Interactive Overlays -->
+    <div class="canvas-container" id="canvasContainer">
+      <canvas id="gameCanvas" width="400" height="600"></canvas>
+
+      <!-- Overlay: Start / Ready Screen -->
+      <div class="canvas-overlay" id="startOverlay">
+        <div class="overlay-content">
+          <div class="overlay-icon">🐦</div>
+          <h2 class="overlay-title">Neon <span class="gradient-text">Flappy Flight</span></h2>
+          <p class="overlay-desc">Glide your cyber-drone through pulsing neon pipe gates. Timing and reflex are everything!</p>
+
+          <div class="intel-box">
+            <div class="intel-item"><span>⚡ Flap Upward</span><span>Tap / Space / Click</span></div>
+            <div class="intel-item"><span>🚀 Gate Clearance</span><span>+1 pt per Pipe Pair</span></div>
+            <div class="intel-item"><span>⚠️ Hazard Alert</span><span>Avoid Pipes & Ground</span></div>
+          </div>
+
+          <button id="startBtn" class="game-action-btn start-pulse">
+            <span>▶</span> Start Flight
+          </button>
+          <p class="overlay-hint">or press <kbd>Space</kbd> / <kbd>↑</kbd> to launch</p>
+        </div>
+      </div>
+
+      <!-- Overlay: Pause Screen -->
+      <div class="canvas-overlay hidden" id="pauseOverlay">
+        <div class="overlay-content">
+          <div class="overlay-icon">⏸️</div>
+          <h2 class="overlay-title">Flight <span class="gradient-text">Paused</span></h2>
+          <p class="overlay-desc">Thrusters in standby. The cyber-city airspace is frozen.</p>
+          <div class="overlay-buttons">
+            <button id="resumeBtn" class="game-action-btn">
+              <span>▶</span> Resume Flight
+            </button>
+            <button id="pauseRestartBtn" class="secondary-action-btn">
+              <span>🔄</span> Restart
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Overlay: Game Over Screen -->
+      <div class="canvas-overlay hidden" id="gameOverOverlay">
+        <div class="overlay-content game-over-content">
+          <div class="overlay-icon" id="gameOverIcon">💥</div>
+          <h2 class="overlay-title">Flight <span class="gradient-text">Terminated!</span></h2>
+          <p class="overlay-desc" id="gameOverMessage">Your cyber-drone collided with an obstacle.</p>
+
+          <div class="final-score-callout">
+            <span class="callout-label">FINAL SCORE</span>
+            <div class="callout-value" id="finalScoreVal">0</div>
+          </div>
+
+          <div id="newBestBadge" class="new-record-badge hidden">
+            ✨ New Personal Best! ✨
+          </div>
+
+          <div class="modal-stats-grid">
+            <div class="modal-stat-item">
+              <span class="m-label">Best Record</span>
+              <strong id="finalBestVal" class="gold">0</strong>
+            </div>
+            <div class="modal-stat-item">
+              <span class="m-label">Pipes Cleared</span>
+              <strong id="finalPipesVal" class="cyan">0</strong>
+            </div>
+            <div class="modal-stat-item">
+              <span class="m-label">Flight Time</span>
+              <strong id="finalTimeVal" class="purple">0s</strong>
+            </div>
+            <div class="modal-stat-item">
+              <span class="m-label">Difficulty</span>
+              <strong id="finalDiffVal" class="emerald">Easy</strong>
+            </div>
+          </div>
+
+          <div class="overlay-buttons">
+            <button id="playAgainBtn" class="game-action-btn start-pulse">
+              <span>🔄</span> Play Again
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Action Control Bar (Pause, Restart) -->
+    <div class="game-controls-bar">
+      <button id="pauseToggleBtn" class="control-btn" title="Pause or Resume flight" disabled>
+        <span id="pauseBtnIcon">⏸️</span>
+        <span id="pauseBtnLabel">Pause</span>
+      </button>
+      <button id="restartBtn" class="control-btn" title="Restart flight">
+        <span>🔄</span>
+        <span>Restart</span>
+      </button>
+    </div>
+
+    <!-- Mobile Virtual Tap Zone -->
+    <div class="mobile-tap-bar" id="mobileTapBar">
+      <button class="mobile-flap-btn" id="mobileFlapBtn" aria-label="Tap to Flap">
+        <span>⚡</span> TAP TO FLAP
+      </button>
+    </div>
+
+    <!-- Instructions / Shortcuts Guide Box -->
+    <footer class="game-guide-box">
+      <div class="guide-item">
+        <span class="guide-tag">Desktop</span>
+        <span>Flap with <strong>Spacebar</strong>, <strong>Up Arrow (↑)</strong>, <strong>W</strong>, or <strong>Left Click</strong> anywhere on the screen. Pause with <kbd>P</kbd> or <kbd>Esc</kbd>.</span>
+      </div>
+      <div class="guide-item">
+        <span class="guide-tag">Mobile</span>
+        <span><strong>Tap directly on the screen</strong> or use the <strong>TAP TO FLAP</strong> button below. Avoid pipes and ground!</span>
+      </div>
+      <div class="guide-item">
+        <span class="guide-tag">Progression</span>
+        <span>Flight speed increases dynamically as your score climbs. Can you master Hard mode?</span>
+      </div>
+    </footer>
+  </main>
+
+  <!-- Audio Engine & Game Script -->
+  <script src="../../js/audio.js"></script>
+  <script src="flappy.js"></script>
+</body>
+</html>
