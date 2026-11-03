@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Neon Pong | PlayZone Arcade</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%230a0d14'/><rect x='4' y='8' width='3' height='16' rx='1.5' fill='%2300f0ff'/><rect x='25' y='8' width='3' height='16' rx='1.5' fill='%23a855f7'/><circle cx='16' cy='16' r='3.5' fill='%23ffffff'/></svg>">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700;800&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
+
+  <!-- Core Theme & Game Styles -->
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="pong.css">
+
+  <!-- Google AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1365345472330703" crossorigin="anonymous"></script>
+</head>
+<body class="pong-page">
+
+  <!-- Background decorative light orbs -->
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
+
+  <!-- Top Navigation Header -->
+  <header class="game-header">
+    <div class="game-nav-container">
+      <a href="../../index.html" class="back-link" id="backToHome">
+        <span class="back-arrow">←</span>
+        <span class="back-label-full">Back to PlayZone</span>
+        <span class="back-label-short">Back</span>
+      </a>
+
+      <div class="game-title-wrap">
+        <span class="game-icon">🏓</span>
+        <h1 class="game-heading">Neon <span class="gradient-text">Pong</span></h1>
+      </div>
+
+      <!-- Header Action Controls -->
+      <div class="header-actions">
+        <button id="soundToggle" class="icon-btn" aria-label="Toggle sound" title="Toggle Sound">
+          <span id="soundIcon">🔊</span>
+          <span class="btn-label">Sound</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Game Stage -->
+  <main class="game-wrapper">
+
+    <!-- Match Settings Card (Mode, Target Score, Difficulty) -->
+    <div class="settings-card">
+      <!-- Mode Selector -->
+      <div class="settings-row">
+        <span class="setting-label">Game Mode:</span>
+        <div class="toggle-group" id="modeSelector">
+          <button class="toggle-btn active" data-mode="1p">🤖 1 Player (vs AI)</button>
+          <button class="toggle-btn" data-mode="2p">👥 2 Players (Local)</button>
+        </div>
+      </div>
+
+      <!-- Target Score Selector -->
+      <div class="settings-row">
+        <span class="setting-label">Target Score:</span>
+        <div class="toggle-group" id="targetSelector">
+          <button class="toggle-btn active" data-target="5">5 Pts</button>
+          <button class="toggle-btn" data-target="7">7 Pts</button>
+          <button class="toggle-btn" data-target="10">10 Pts</button>
+        </div>
+      </div>
+
+      <!-- AI Difficulty (Only in 1P mode) -->
+      <div class="settings-row" id="difficultyRow">
+        <span class="setting-label">AI Level:</span>
+        <div class="toggle-group" id="difficultySelector">
+          <button class="toggle-btn" data-diff="easy">🌱 Easy</button>
+          <button class="toggle-btn active" data-diff="medium">⚡ Medium</button>
+          <button class="toggle-btn" data-diff="hard">🔥 Hard (Fast)</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Match Scoreboard Card -->
+    <div class="scoreboard-card">
+      <!-- Left Player Box -->
+      <div class="score-player-box left-player">
+        <span class="player-badge cyan-badge" id="leftPlayerBadge">Player 1</span>
+        <span class="score-number cyan" id="leftScoreDisplay">0</span>
+      </div>
+
+      <!-- Match Target / Rally Center Box -->
+      <div class="score-center-box">
+        <span class="match-target-tag" id="matchTargetTag">FIRST TO 5</span>
+        <div class="rally-wrap">
+          <span class="rally-label">Rally</span>
+          <span class="rally-count" id="rallyCount">0</span>
+        </div>
+      </div>
+
+      <!-- Right Player / AI Box -->
+      <div class="score-player-box right-player">
+        <span class="player-badge purple-badge" id="rightPlayerBadge">Cyber AI</span>
+        <span class="score-number purple" id="rightScoreDisplay">0</span>
+      </div>
+    </div>
+
+    <!-- Canvas Court Frame -->
+    <div class="court-container" id="courtContainer">
+      <canvas id="pongCanvas" width="800" height="500"></canvas>
+
+      <!-- Overlay: Start Match Screen -->
+      <div class="court-overlay" id="startOverlay">
+        <div class="overlay-inner">
+          <div class="overlay-icon">🏓</div>
+          <h2 class="overlay-title">Neon <span class="gradient-text">Pong</span></h2>
+          <p class="overlay-desc" id="startDesc">Defend your goal line, angle your returns, and accelerate the cyber energy ball.</p>
+
+          <div class="control-shortcuts-box" id="shortcutsBox">
+            <div class="shortcut-item">
+              <span class="shortcut-tag cyan">Left Paddle:</span>
+              <span><strong>W / S</strong> or Mouse / Touch</span>
+            </div>
+            <div class="shortcut-item" id="p2Shortcut">
+              <span class="shortcut-tag purple">Right Paddle:</span>
+              <span><strong>▲ / ▼ Arrow Keys</strong> or Touch</span>
+            </div>
+          </div>
+
+          <button id="startMatchBtn" class="game-action-btn start-pulse">
+            <span>▶</span> Start Match
+          </button>
+        </div>
+      </div>
+
+      <!-- Overlay: Pause Screen -->
+      <div class="court-overlay hidden" id="pauseOverlay">
+        <div class="overlay-inner">
+          <div class="overlay-icon">⏸️</div>
+          <h2 class="overlay-title">Match Paused</h2>
+          <p class="overlay-desc">Game clock and rally speed are frozen.</p>
+          <button id="resumeBtn" class="game-action-btn">
+            <span>▶</span> Resume Match
+          </button>
+        </div>
+      </div>
+
+      <!-- Overlay: Match Victory Screen -->
+      <div class="court-overlay hidden" id="victoryOverlay">
+        <div class="overlay-inner">
+          <div class="overlay-icon" id="victoryIcon">🏆</div>
+          <h2 class="overlay-title" id="victoryTitle">Player 1 <span class="gradient-text">Wins!</span></h2>
+          <p class="overlay-desc" id="victoryDesc">Dominant reflexes! Reached the target score first.</p>
+
+          <div class="final-score-box">
+            <span class="f-label">FINAL SCORE</span>
+            <div class="f-score-wrap">
+              <span class="f-score cyan" id="finalLeftScore">0</span>
+              <span class="f-divider">-</span>
+              <span class="f-score purple" id="finalRightScore">0</span>
+            </div>
+          </div>
+
+          <div id="newBestBadge" class="new-record-badge hidden">
+            ✨ New Personal Wins Record! ✨
+          </div>
+
+          <div class="modal-stats-grid">
+            <div class="modal-stat-item">
+              <span class="m-label">Longest Rally</span>
+              <strong id="finalLongestRally" class="gold">0 hits</strong>
+            </div>
+            <div class="modal-stat-item">
+              <span class="m-label">Total Matches Won</span>
+              <strong id="finalTotalWins" class="cyan">0</strong>
+            </div>
+          </div>
+
+          <div class="overlay-buttons-row">
+            <button id="playAgainBtn" class="game-action-btn start-pulse">
+              <span>🔄</span> Play Again
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Mobile On-Screen Touch Controls (Visible on Touch Screens) -->
+    <div class="mobile-touch-bar" id="mobileTouchBar">
+      <!-- Left Player Touch Controls -->
+      <div class="touch-side left-touch">
+        <span class="touch-label cyan">P1 Paddle</span>
+        <div class="touch-btn-group">
+          <button class="touch-btn" id="touchP1Up" aria-label="Player 1 Paddle Up">▲</button>
+          <button class="touch-btn" id="touchP1Down" aria-label="Player 1 Paddle Down">▼</button>
+        </div>
+      </div>
+
+      <!-- Right Player Touch Controls (Active in 2P mode) -->
+      <div class="touch-side right-touch" id="p2TouchSide">
+        <span class="touch-label purple">P2 Paddle</span>
+        <div class="touch-btn-group">
+          <button class="touch-btn purple-btn" id="touchP2Up" aria-label="Player 2 Paddle Up">▲</button>
+          <button class="touch-btn purple-btn" id="touchP2Down" aria-label="Player 2 Paddle Down">▼</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Action Controls Bar -->
+    <div class="game-controls-bar">
+      <button id="pauseToggleBtn" class="control-btn" title="Pause or Resume match">
+        <span id="pauseBtnIcon">⏸️</span>
+        <span id="pauseBtnLabel">Pause</span>
+      </button>
+
+      <button id="restartBtn" class="control-btn" title="Restart current match">
+        <span>🔄</span>
+        <span>Restart Match</span>
+      </button>
+    </div>
+
+    <!-- Instructions / Guide Box -->
+    <footer class="game-guide-box">
+      <div class="guide-item">
+        <span class="guide-tag">Controls</span>
+        <span><strong>Player 1 (Cyan):</strong> W / S keys or move mouse vertically. <strong>Player 2 (Purple):</strong> ▲ / ▼ arrow keys. On mobile, use the on-screen touch arrows.</span>
+      </div>
+      <div class="guide-item">
+        <span class="guide-tag">Physics</span>
+        <span>Ball bounce angle shifts realistically based on where it contacts the paddle. Ball speed gradually accelerates during long rallies!</span>
+      </div>
+      <div class="guide-item">
+        <span class="guide-tag">Scoring</span>
+        <span>First player to reach the target score claims match victory. Wins are saved to your PlayZone record!</span>
+      </div>
+    </footer>
+
+  </main>
+
+  <!-- Audio Engine & Game Script -->
+  <script src="../../js/audio.js"></script>
+  <script src="pong.js"></script>
+</body>
+</html>

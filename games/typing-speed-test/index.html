@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Typing Speed Test | PlayZone Arcade</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%230a0d14'/><text x='16' y='22' font-size='18' text-anchor='middle'>⌨️</text></svg>">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700;800&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
+
+  <!-- Core Theme & Game Styles -->
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="typing-speed-test.css">
+
+  <!-- Google AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1365345472330703" crossorigin="anonymous"></script>
+</head>
+<body class="typing-page">
+
+  <!-- Background decorative light orbs -->
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Top Navigation Header -->
+  <header class="game-header">
+    <div class="game-nav-container">
+      <a href="../../index.html" class="back-link" id="backToHome">
+        <span class="back-arrow">←</span>
+        <span class="back-label-full">Back to PlayZone</span>
+        <span class="back-label-short">Back</span>
+      </a>
+
+      <div class="game-title-wrap">
+        <span class="game-icon">⌨️</span>
+        <h1 class="game-heading">Typing <span class="gradient-text">Speed Test</span></h1>
+      </div>
+
+      <!-- Header Action Controls -->
+      <div class="header-actions">
+        <button id="soundToggle" class="icon-btn" aria-label="Toggle sound" title="Toggle Sound">
+          <span id="soundIcon">🔊</span>
+          <span class="btn-label">Sound</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Game Stage -->
+  <main class="game-wrapper">
+
+    <!-- Settings Bar (Mode, Time / Challenge, Difficulty) -->
+    <div class="settings-card">
+      <!-- Challenge Mode Tabs -->
+      <div class="settings-row">
+        <span class="setting-label">Mode:</span>
+        <div class="toggle-group" id="modeSelector">
+          <button class="toggle-btn active" data-mode="time">⏱️ Time Challenge</button>
+          <button class="toggle-btn" data-mode="passage">📖 Passage Challenge</button>
+        </div>
+      </div>
+
+      <!-- Time Duration Options (Active in Time Challenge) -->
+      <div class="settings-row" id="timeRow">
+        <span class="setting-label">Duration:</span>
+        <div class="toggle-group" id="timeSelector">
+          <button class="toggle-btn" data-time="15">15s</button>
+          <button class="toggle-btn active" data-time="30">30s</button>
+          <button class="toggle-btn" data-time="60">60s</button>
+          <button class="toggle-btn" data-time="120">120s</button>
+        </div>
+      </div>
+
+      <!-- Difficulty Selector -->
+      <div class="settings-row">
+        <span class="setting-label">Difficulty:</span>
+        <div class="toggle-group" id="difficultySelector">
+          <button class="toggle-btn" data-diff="easy">🌱 Easy</button>
+          <button class="toggle-btn active" data-diff="medium">⚡ Medium</button>
+          <button class="toggle-btn" data-diff="hard">🔥 Hard (Pro)</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Live Statistics Scoreboard -->
+    <div class="scoreboard-card">
+      <!-- Live WPM -->
+      <div class="score-box highlight-box">
+        <span class="score-label">Speed</span>
+        <div class="speed-val-wrap">
+          <span class="score-number cyan" id="wpmDisplay">0</span>
+          <span class="score-unit">WPM</span>
+        </div>
+      </div>
+
+      <div class="score-divider"></div>
+
+      <!-- Live Accuracy -->
+      <div class="score-box">
+        <span class="score-label">Accuracy</span>
+        <span class="score-number emerald" id="accuracyDisplay">100%</span>
+      </div>
+
+      <div class="score-divider"></div>
+
+      <!-- Live Timer -->
+      <div class="score-box">
+        <span class="score-label" id="timerLabel">Time Left</span>
+        <span class="score-number gold" id="timerDisplay">30s</span>
+      </div>
+
+      <div class="score-divider"></div>
+
+      <!-- CPM (Characters Per Minute) -->
+      <div class="score-box">
+        <span class="score-label">CPM</span>
+        <span class="score-number purple" id="cpmDisplay">0</span>
+      </div>
+
+      <div class="score-divider"></div>
+
+      <!-- Best WPM Record -->
+      <div class="score-box best-score-box">
+        <span class="score-label">Best Record</span>
+        <span class="score-number gold" id="bestWpmDisplay">0 WPM</span>
+      </div>
+    </div>
+
+    <!-- Interactive Typing Area Card -->
+    <div class="typing-card" id="typingCard">
+
+      <!-- In-Card Pause Overlay -->
+      <div class="typing-overlay hidden" id="pauseOverlay">
+        <div class="overlay-inner">
+          <div class="overlay-icon">⏸️</div>
+          <h2 class="overlay-title">Test Paused</h2>
+          <p class="overlay-desc">Timer is frozen. Resume whenever you're ready.</p>
+          <button id="resumeBtn" class="game-action-btn">
+            <span>▶</span> Resume Typing
+          </button>
+        </div>
+      </div>
+
+      <!-- Target Passage Display Box -->
+      <div class="passage-box" id="passageBox" tabindex="0" role="textbox" aria-label="Text to type">
+        <!-- Text spans rendered dynamically -->
+      </div>
+
+      <!-- Hidden capture input for both Desktop & Mobile Virtual Keyboards -->
+      <textarea
+        id="hiddenInput"
+        class="hidden-input"
+        autocomplete="off"
+        autocorrect="off"
+        autocapitalize="none"
+        spellcheck="false"
+        aria-hidden="true"
+      ></textarea>
+
+      <!-- Focus Hint Bar -->
+      <div class="focus-hint" id="focusHint">
+        <span>💡 Tap or click the text area to start typing</span>
+      </div>
+
+    </div>
+
+    <!-- Quick Action Controls Bar -->
+    <div class="game-controls-bar">
+      <button id="restartBtn" class="control-btn" title="Restart with current passage">
+        <span>🔄</span>
+        <span>Restart</span>
+      </button>
+
+      <button id="newPassageBtn" class="control-btn" title="Load a new random passage">
+        <span>🔀</span>
+        <span>New Passage</span>
+      </button>
+
+      <button id="pauseToggleBtn" class="control-btn secondary-btn" title="Pause / Resume test">
+        <span id="pauseBtnIcon">⏸️</span>
+        <span id="pauseBtnLabel">Pause</span>
+      </button>
+    </div>
+
+    <!-- Modal: Results Screen Overlay -->
+    <div class="game-overlay hidden" id="resultsOverlay">
+      <div class="overlay-card results-card">
+        <div class="overlay-icon" id="resultsIcon">🏆</div>
+        <h2 class="overlay-title">Typing Test <span class="gradient-text">Complete!</span></h2>
+        <p class="overlay-desc" id="resultsSubtitle">Spectacular typing rhythm and keystroke precision.</p>
+
+        <!-- Final WPM Callout Box -->
+        <div class="final-score-callout">
+          <span class="callout-label">NET TYPING SPEED</span>
+          <div class="callout-value-wrap">
+            <span class="callout-value" id="finalWpmVal">0</span>
+            <span class="callout-unit">WPM</span>
+          </div>
+        </div>
+
+        <div id="newBestBadge" class="new-record-badge hidden">
+          ✨ New Personal Best Record! ✨
+        </div>
+
+        <!-- Detailed Metrics Grid -->
+        <div class="modal-stats-grid">
+          <div class="modal-stat-item">
+            <span class="m-label">Accuracy</span>
+            <strong id="finalAccuracyVal" class="emerald">100%</strong>
+          </div>
+          <div class="modal-stat-item">
+            <span class="m-label">Characters / Min</span>
+            <strong id="finalCpmVal" class="purple">0 CPM</strong>
+          </div>
+          <div class="modal-stat-item">
+            <span class="m-label">Correct Chars</span>
+            <strong id="finalCorrectCharsVal" class="cyan">0</strong>
+          </div>
+          <div class="modal-stat-item">
+            <span class="m-label">Errors</span>
+            <strong id="finalErrorsVal" class="red">0</strong>
+          </div>
+          <div class="modal-stat-item">
+            <span class="m-label">Time Taken</span>
+            <strong id="finalTimeVal" class="gold">30s</strong>
+          </div>
+          <div class="modal-stat-item">
+            <span class="m-label">Best Record</span>
+            <strong id="finalBestWpmVal" class="gold">0 WPM</strong>
+          </div>
+        </div>
+
+        <!-- Result Buttons -->
+        <div class="overlay-buttons-grid">
+          <button id="tryAgainBtn" class="game-action-btn start-pulse">
+            <span>🔄</span> Try Again
+          </button>
+          <button id="nextPassageBtn" class="game-action-btn secondary-action-btn">
+            <span>🔀</span> Next Passage
+          </button>
+          <button id="shareResultBtn" class="game-action-btn secondary-action-btn">
+            <span>📤</span> Share Result
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Instructions / Guide Box -->
+    <footer class="game-guide-box">
+      <div class="guide-item">
+        <span class="guide-tag">WPM Formula</span>
+        <span>Standard calculation: <strong>(Correct Characters ÷ 5) ÷ Elapsed Minutes</strong>. Accuracy is the percentage of correct keystrokes.</span>
+      </div>
+      <div class="guide-item">
+        <span class="guide-tag">Modes</span>
+        <span><strong>Time Challenge:</strong> Type as much as possible before time expires. <strong>Passage Challenge:</strong> Complete the whole text at top speed.</span>
+      </div>
+      <div class="guide-item">
+        <span class="guide-tag">Shortcuts</span>
+        <span>Press <strong>Tab</strong> or click <strong>Restart</strong> to quickly reset the test. Works with physical and mobile touch keyboards.</span>
+      </div>
+    </footer>
+
+  </main>
+
+  <!-- Audio Engine & Game Script -->
+  <script src="../../js/audio.js"></script>
+  <script src="typing-speed-test.js"></script>
+</body>
+</html>

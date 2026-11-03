@@ -172,6 +172,66 @@ const GAMES_CATALOG = [
     scoreKey: 'playzone_score_endless_runner',
     scoreUnit: 'pts',
     path: 'games/endless-runner/index.html'
+  },
+  {
+    id: 'jigsaw-puzzle',
+    title: 'Jigsaw Puzzle',
+    category: 'puzzle',
+    badge: 'Brain Game',
+    difficulty: 'Easy–Hard',
+    icon: '🧩',
+    description: 'Solve colorful picture puzzles, move pieces into place, and complete beautiful artwork.',
+    scoreKey: 'playzone_score_jigsaw_puzzle',
+    scoreUnit: 'pts',
+    path: 'games/jigsaw-puzzle/index.html'
+  },
+  {
+    id: 'bubble-shooter',
+    title: 'Bubble Shooter',
+    category: 'arcade',
+    badge: 'Classic',
+    difficulty: 'Easy–Hard',
+    icon: '🫧',
+    description: 'Aim, shoot, and match colorful bubbles to clear the board and beat your high score.',
+    scoreKey: 'playzone_score_bubble_shooter',
+    scoreUnit: 'pts',
+    path: 'games/bubble-shooter/index.html'
+  },
+  {
+    id: 'rock-paper-scissors',
+    title: 'Rock Paper Scissors',
+    category: 'arcade',
+    badge: 'Classic',
+    difficulty: 'Easy–Hard',
+    icon: '✊',
+    description: 'Challenge the computer in the classic Rock Paper Scissors game and build your winning streak.',
+    scoreKey: 'playzone_score_rock_paper_scissors',
+    scoreUnit: 'pts',
+    path: 'games/rock-paper-scissors/index.html'
+  },
+  {
+    id: 'typing-speed-test',
+    title: 'Typing Speed Test',
+    category: 'reflex',
+    badge: 'Skill Test',
+    difficulty: 'Easy–Hard',
+    icon: '⌨️',
+    description: 'Test your typing speed, improve accuracy, and beat your personal WPM record.',
+    scoreKey: 'playzone_score_typing_speed_test',
+    scoreUnit: 'WPM',
+    path: 'games/typing-speed-test/index.html'
+  },
+  {
+    id: 'pong',
+    title: 'Pong',
+    category: 'arcade',
+    badge: 'Retro',
+    difficulty: 'Easy–Hard',
+    icon: '🏓',
+    description: 'Classic retro arcade table tennis: duel the adaptive cyber AI or challenge a friend locally.',
+    scoreKey: 'playzone_score_pong',
+    scoreUnit: 'wins',
+    path: 'games/pong/index.html'
   }
 ];
 
@@ -218,6 +278,9 @@ function getHighScoreDisplay(game) {
   }
   if (game.scoreUnit === 'wins') {
     return `${savedScore} Wins`;
+  }
+  if (game.scoreUnit === 'WPM') {
+    return `${savedScore} WPM`;
   }
   return `${savedScore} pts`;
 }

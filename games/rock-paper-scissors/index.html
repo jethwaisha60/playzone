@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Rock Paper Scissors | PlayZone Arcade</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%230a0d14'/><text x='16' y='22' font-size='18' text-anchor='middle'>✊</text></svg>">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700;800&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
+
+  <!-- Core Theme & Game Styles -->
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="rock-paper-scissors.css">
+
+  <!-- Google AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1365345472330703" crossorigin="anonymous"></script>
+</head>
+<body class="rps-page">
+
+  <!-- Background decorative light orbs -->
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
+
+  <!-- Top Navigation Header -->
+  <header class="game-header">
+    <div class="game-nav-container">
+      <a href="../../index.html" class="back-link" id="backToHome">
+        <span class="back-arrow">←</span>
+        <span class="back-label-full">Back to PlayZone</span>
+        <span class="back-label-short">Back</span>
+      </a>
+
+      <div class="game-title-wrap">
+        <span class="game-icon">✊</span>
+        <h1 class="game-heading">Rock Paper <span class="gradient-text">Scissors</span></h1>
+      </div>
+
+      <!-- Header Action Controls -->
+      <div class="header-actions">
+        <button id="soundToggle" class="icon-btn" aria-label="Toggle sound" title="Toggle Sound">
+          <span id="soundIcon">🔊</span>
+          <span class="btn-label">Sound</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Game Stage -->
+  <main class="game-wrapper">
+
+    <!-- Match Settings Card (Rounds & Difficulty) -->
+    <div class="settings-card">
+      <!-- Round Format Selector -->
+      <div class="settings-row">
+        <span class="setting-label">Match Mode:</span>
+        <div class="toggle-group" id="roundSelector">
+          <button class="toggle-btn" data-rounds="3">Best of 3</button>
+          <button class="toggle-btn active" data-rounds="5">Best of 5</button>
+          <button class="toggle-btn" data-rounds="10">Best of 10</button>
+          <button class="toggle-btn" data-rounds="endless">∞ Endless</button>
+        </div>
+      </div>
+
+      <!-- AI Difficulty Selector -->
+      <div class="settings-row">
+        <span class="setting-label">Cyber AI:</span>
+        <div class="toggle-group" id="difficultySelector">
+          <button class="toggle-btn" data-diff="easy">🌱 Easy</button>
+          <button class="toggle-btn active" data-diff="medium">⚡ Medium</button>
+          <button class="toggle-btn" data-diff="hard">🔥 Hard (Adaptive)</button>
+        </div>
+      </div>
+
+      <!-- AI Intelligence Explanation Pill -->
+      <div class="ai-intel-pill" id="aiIntelPill">
+        <span>🤖 <strong>Medium AI:</strong> Balanced strategic variations with mostly random choices.</span>
+      </div>
+    </div>
+
+    <!-- Score & Stats Bar -->
+    <div class="scoreboard-card">
+      <div class="score-box">
+        <span class="score-label">You</span>
+        <span class="score-number cyan" id="playerWinsDisplay">0</span>
+      </div>
+
+      <div class="score-divider"></div>
+
+      <div class="score-box">
+        <span class="score-label">Draws</span>
+        <span class="score-number gold" id="drawsDisplay">0</span>
+      </div>
+
+      <div class="score-divider"></div>
+
+      <div class="score-box">
+        <span class="score-label">Cyber AI</span>
+        <span class="score-number pink" id="aiWinsDisplay">0</span>
+      </div>
+
+      <div class="score-divider"></div>
+
+      <div class="score-box">
+        <span class="score-label">Round</span>
+        <span class="score-number purple" id="roundDisplay">1 / 5</span>
+      </div>
+
+      <div class="score-divider"></div>
+
+      <div class="score-box">
+        <span class="score-label">Score</span>
+        <span class="score-number cyan" id="scoreDisplay">0 pts</span>
+      </div>
+
+      <div class="score-divider"></div>
+
+      <div class="score-box best-score-box">
+        <span class="score-label">Best Record</span>
+        <span class="score-number gold" id="bestScoreDisplay">0 pts</span>
+      </div>
+    </div>
+
+    <!-- Battle Arena Card (Duel Showdown Stage) -->
+    <div class="arena-card">
+
+      <!-- In-Arena Pause Overlay -->
+      <div class="arena-overlay hidden" id="pauseOverlay">
+        <div class="arena-overlay-inner">
+          <div class="overlay-icon">⏸️</div>
+          <h2 class="overlay-title">Match Paused</h2>
+          <p class="overlay-desc">Catch your breath. The cyber showdown is on hold.</p>
+          <button id="resumeBtn" class="game-action-btn">
+            <span>▶</span> Resume Duel
+          </button>
+        </div>
+      </div>
+
+      <!-- Duel Stage: Player vs AI -->
+      <div class="duel-stage">
+
+        <!-- Player Side -->
+        <div class="fighter-column player-column">
+          <div class="fighter-header">
+            <span class="fighter-tag you-tag">YOU</span>
+            <span class="fighter-name">Human Fighter</span>
+          </div>
+          <div class="choice-avatar-box" id="playerChoiceBox">
+            <span class="choice-emoji" id="playerSymbol">❓</span>
+            <div class="choice-glow player-glow"></div>
+          </div>
+          <span class="choice-name" id="playerChoiceLabel">Pick a move</span>
+        </div>
+
+        <!-- Center Clash / VS / Result Display -->
+        <div class="clash-column">
+          <div class="vs-emblem" id="vsEmblem">VS</div>
+          <div class="countdown-badge hidden" id="countdownBadge">3</div>
+        </div>
+
+        <!-- Computer AI Side -->
+        <div class="fighter-column ai-column">
+          <div class="fighter-header">
+            <span class="fighter-tag ai-tag">CYBER AI</span>
+            <span class="fighter-name" id="aiNameDisplay">Nexus AI</span>
+          </div>
+          <div class="choice-avatar-box" id="aiChoiceBox">
+            <span class="choice-emoji" id="aiSymbol">❓</span>
+            <div class="choice-glow ai-glow"></div>
+          </div>
+          <span class="choice-name" id="aiChoiceLabel">Waiting...</span>
+        </div>
+
+      </div>
+
+      <!-- Round Outcome Announcement Banner -->
+      <div class="round-banner" id="roundBanner">
+        <span class="banner-title" id="bannerTitle">Make Your Move!</span>
+        <span class="banner-subtitle" id="bannerSubtitle">Select Rock, Paper, or Scissors below to start the round.</span>
+      </div>
+
+    </div>
+
+    <!-- Choice Selection Bar (Weapon Controls) -->
+    <div class="weapons-section">
+      <span class="weapons-heading">SELECT YOUR WEAPON</span>
+      <div class="weapon-buttons" id="weaponButtons">
+        
+        <!-- Rock Button -->
+        <button class="weapon-btn" data-move="rock" id="btnRock" aria-label="Choose Rock">
+          <div class="btn-top">
+            <span class="weapon-emoji">✊</span>
+          </div>
+          <span class="weapon-title">ROCK</span>
+          <span class="weapon-sub">Crushes Scissors</span>
+        </button>
+
+        <!-- Paper Button -->
+        <button class="weapon-btn" data-move="paper" id="btnPaper" aria-label="Choose Paper">
+          <div class="btn-top">
+            <span class="weapon-emoji">✋</span>
+          </div>
+          <span class="weapon-title">PAPER</span>
+          <span class="weapon-sub">Covers Rock</span>
+        </button>
+
+        <!-- Scissors Button -->
+        <button class="weapon-btn" data-move="scissors" id="btnScissors" aria-label="Choose Scissors">
+          <div class="btn-top">
+            <span class="weapon-emoji">✌️</span>
+          </div>
+          <span class="weapon-title">SCISSORS</span>
+          <span class="weapon-sub">Cuts Paper</span>
+        </button>
+
+      </div>
+    </div>
+
+    <!-- Quick Action Controls Bar -->
+    <div class="game-controls-bar">
+      <button id="pauseToggleBtn" class="control-btn" title="Pause or Resume match">
+        <span id="pauseBtnIcon">⏸️</span>
+        <span id="pauseBtnLabel">Pause</span>
+      </button>
+
+      <button id="restartBtn" class="control-btn" title="Reset current match">
+        <span>🔄</span>
+        <span>Reset Match</span>
+      </button>
+    </div>
+
+    <!-- Modal: Match Complete Overlay -->
+    <div class="game-overlay hidden" id="matchEndOverlay">
+      <div class="overlay-card">
+        <div class="overlay-icon" id="matchEndIcon">🏆</div>
+        <h2 class="overlay-title" id="matchEndTitle">Match <span class="gradient-text">Victory!</span></h2>
+        <p class="overlay-desc" id="matchEndDesc">Outstanding combat intuition! You triumphed over the Cyber AI.</p>
+
+        <div class="final-score-box">
+          <span class="f-label">TOTAL MATCH SCORE</span>
+          <span class="f-score" id="finalScoreVal">0 pts</span>
+        </div>
+
+        <div id="newBestBadge" class="new-record-badge hidden">
+          ✨ New Personal Best! ✨
+        </div>
+
+        <div class="modal-stats-grid">
+          <div class="modal-stat-item">
+            <span class="m-label">Your Wins</span>
+            <strong id="finalPlayerWins" class="cyan">0</strong>
+          </div>
+          <div class="modal-stat-item">
+            <span class="m-label">AI Wins</span>
+            <strong id="finalAiWins" class="pink">0</strong>
+          </div>
+          <div class="modal-stat-item">
+            <span class="m-label">Draws</span>
+            <strong id="finalDraws" class="gold">0</strong>
+          </div>
+          <div class="modal-stat-item">
+            <span class="m-label">Best Record</span>
+            <strong id="finalBestVal" class="purple">0 pts</strong>
+          </div>
+        </div>
+
+        <button id="playAgainBtn" class="game-action-btn start-pulse">
+          <span>🔄</span> Play Another Match
+        </button>
+      </div>
+    </div>
+
+    <!-- Instructions / Guide Box -->
+    <footer class="game-guide-box">
+      <div class="guide-item">
+        <span class="guide-tag">Rules</span>
+        <span><strong>Rock (✊)</strong> crushes Scissors • <strong>Scissors (✌️)</strong> cuts Paper • <strong>Paper (✋)</strong> covers Rock.</span>
+      </div>
+      <div class="guide-item">
+        <span class="guide-tag">Scoring</span>
+        <span>Round Win: <strong>+10 pts</strong> • Draw: <strong>+2 pts</strong> • Loss: <strong>+0 pts</strong> • Match Victory Bonus: <strong>+50 pts</strong>.</span>
+      </div>
+      <div class="guide-item">
+        <span class="guide-tag">AI Modes</span>
+        <span><strong>Easy:</strong> Random • <strong>Medium:</strong> Balanced tactical mix • <strong>Hard:</strong> Psychological pattern-prediction model.</span>
+      </div>
+    </footer>
+
+  </main>
+
+  <!-- Audio Engine & Game Script -->
+  <script src="../../js/audio.js"></script>
+  <script src="rock-paper-scissors.js"></script>
+</body>
+</html>

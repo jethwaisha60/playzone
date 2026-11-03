@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jigsaw Puzzle | PlayZone Arcade</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%230a0d14'/><path d='M9 13h14a5 5 0 0 1 5 5v2a3 3 0 0 1-5 2l-3-4h-8l-3 4a3 3 0 0 1-5-2v-2a5 5 0 0 1 5-5z' fill='%23121724' stroke='%2300f0ff' stroke-width='1.5'/><circle cx='21' cy='17' r='1' fill='%23ec4899'/><circle cx='24' cy='17' r='1' fill='%23a855f7'/><path d='M8 17h4m-2-2v4' stroke='%2300f0ff' stroke-width='1.2' stroke-linecap='round'/></svg>">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700;800&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
+
+  <!-- Core Theme & Game Styles -->
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="jigsaw-puzzle.css">
+
+  <!-- Google AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1365345472330703" crossorigin="anonymous"></script>
+</head>
+<body class="jigsaw-page">
+
+  <!-- Background decorative light orbs -->
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
+
+  <!-- Top Navigation Header -->
+  <header class="game-header">
+    <div class="game-nav-container">
+      <a href="../../index.html" class="back-link" id="backToHome">
+        <span class="back-arrow">←</span>
+        <span class="back-label-full">Back to PlayZone</span>
+        <span class="back-label-short">Back</span>
+      </a>
+
+      <div class="game-title-wrap">
+        <span class="game-icon">🧩</span>
+        <h1 class="game-heading">Jigsaw <span class="gradient-text">Puzzle</span></h1>
+      </div>
+
+      <!-- Header Action Controls -->
+      <div class="header-actions">
+        <button id="previewToggleBtn" class="icon-btn" aria-label="Toggle picture preview" title="Show Picture Preview">
+          <span>🖼️</span>
+        </button>
+        <button id="soundToggle" class="icon-btn" aria-label="Toggle sound" title="Toggle Sound">
+          <span id="soundIcon">🔊</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Game Stage -->
+  <main class="game-wrapper">
+
+    <!-- Settings Bar (Theme & Difficulty Selectors) -->
+    <div class="settings-card">
+      <!-- Artwork Theme Tabs -->
+      <div class="settings-row">
+        <span class="setting-label">Theme:</span>
+        <div class="toggle-group theme-group" id="themeSelector">
+          <button class="toggle-btn active" data-theme="neon_city">🌆 Neon City</button>
+          <button class="toggle-btn" data-theme="nature">🌲 Nature</button>
+          <button class="toggle-btn" data-theme="space">🚀 Space</button>
+          <button class="toggle-btn" data-theme="cute_animal">🦊 Cyber Fox</button>
+        </div>
+      </div>
+
+      <!-- Difficulty Tabs -->
+      <div class="settings-row">
+        <span class="setting-label">Grid Size:</span>
+        <div class="toggle-group" id="difficultySelector">
+          <button class="toggle-btn active" data-grid="3">🌱 Easy (3×3)</button>
+          <button class="toggle-btn" data-grid="4">⚡ Medium (4×4)</button>
+          <button class="toggle-btn" data-grid="5">🔥 Hard (5×5)</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Score & Stats Bar -->
+    <div class="scoreboard-card">
+      <div class="score-box">
+        <span class="score-label">Time</span>
+        <span class="score-number cyan" id="timerDisplay">00:00</span>
+      </div>
+
+      <div class="score-divider"></div>
+
+      <div class="score-box">
+        <span class="score-label">Moves</span>
+        <span class="score-number emerald" id="movesDisplay">0</span>
+      </div>
+
+      <div class="score-divider"></div>
+
+      <div class="score-box">
+        <span class="score-label">Progress</span>
+        <span class="score-number gold" id="progressDisplay">0 / 9</span>
+      </div>
+
+      <div class="score-divider"></div>
+
+      <div class="score-box">
+        <span class="score-label">Best Record</span>
+        <span class="score-number purple" id="bestScoreDisplay">0 pts</span>
+      </div>
+    </div>
+
+    <!-- Progress Bar Tracker -->
+    <div class="puzzle-progress-bar-wrap">
+      <div class="puzzle-progress-bar-fill" id="progressBarFill"></div>
+    </div>
+
+    <!-- Puzzle Stage Frame (Target Board + Piece Tray) -->
+    <div class="puzzle-stage-frame">
+
+      <!-- Target Puzzle Board -->
+      <div class="board-column">
+        <div class="puzzle-board-container" id="boardContainer">
+          <div class="puzzle-board" id="puzzleBoard">
+            <!-- Grid target slots rendered dynamically -->
+          </div>
+
+          <!-- In-board Pause Overlay -->
+          <div class="board-overlay hidden" id="pauseOverlay">
+            <div class="overlay-inner">
+              <div class="overlay-icon">⏸️</div>
+              <h3 class="overlay-title">Puzzle Paused</h3>
+              <p class="overlay-desc">Take your time. The timer is frozen.</p>
+              <button id="resumeBtn" class="game-action-btn">
+                <span>▶</span> Resume Puzzle
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Available Pieces Tray -->
+      <div class="tray-column">
+        <div class="tray-card">
+          <div class="tray-header">
+            <span class="tray-title">🧩 Piece Tray</span>
+            <span class="tray-hint" id="trayHint">Drag piece or tap piece then slot</span>
+          </div>
+          <div class="pieces-tray" id="piecesTray">
+            <!-- Shuffled movable pieces rendered dynamically -->
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Quick Action Control Bar (Pause, Restart, Preview) -->
+    <div class="game-controls-bar">
+      <button id="pauseToggleBtn" class="control-btn" title="Pause or Resume puzzle">
+        <span id="pauseBtnIcon">⏸️</span>
+        <span id="pauseBtnLabel">Pause</span>
+      </button>
+      <button id="restartBtn" class="control-btn" title="Reshuffle current puzzle">
+        <span>🔄</span>
+        <span>Reshuffle</span>
+      </button>
+      <button id="showPreviewBtn" class="control-btn secondary-control" title="View reference picture">
+        <span>👁️</span>
+        <span>Preview Picture</span>
+      </button>
+    </div>
+
+    <!-- Modal: Picture Preview Modal -->
+    <div class="game-overlay hidden" id="previewOverlay">
+      <div class="overlay-card preview-card">
+        <button class="modal-close-btn" id="closePreviewBtn" aria-label="Close preview">✕</button>
+        <h2 class="overlay-title" id="previewTitle">Picture Preview</h2>
+        <p class="overlay-desc">Use this reference image to guide your piece placement.</p>
+        <div class="preview-canvas-wrap">
+          <canvas id="previewCanvas" width="360" height="360"></canvas>
+        </div>
+        <button id="closePreviewBtnBottom" class="game-action-btn">
+          <span>✓</span> Back to Puzzle
+        </button>
+      </div>
+    </div>
+
+    <!-- Modal: Victory / Completion Overlay -->
+    <div class="game-overlay hidden" id="winOverlay">
+      <div class="overlay-card win-card">
+        <div class="overlay-icon">🏆</div>
+        <h2 class="overlay-title">Puzzle <span class="gradient-text">Mastered!</span></h2>
+        <p class="overlay-desc" id="winMessage">Magnificent work! All pieces fitted into place flawlessly.</p>
+
+        <div class="final-score-callout">
+          <span class="callout-label">FINAL SCORE</span>
+          <div class="callout-value" id="finalScoreVal">0 pts</div>
+        </div>
+
+        <div id="newBestBadge" class="new-record-badge hidden">
+          ✨ New Personal Best! ✨
+        </div>
+
+        <!-- Detailed Result Stats -->
+        <div class="modal-stats-grid">
+          <div class="modal-stat-item">
+            <span class="m-label">Best Record</span>
+            <strong id="finalBestVal" class="purple">0 pts</strong>
+          </div>
+          <div class="modal-stat-item">
+            <span class="m-label">Total Time</span>
+            <strong id="finalTimeVal" class="cyan">00:00</strong>
+          </div>
+          <div class="modal-stat-item">
+            <span class="m-label">Total Moves</span>
+            <strong id="finalMovesVal" class="emerald">0</strong>
+          </div>
+          <div class="modal-stat-item">
+            <span class="m-label">Difficulty</span>
+            <strong id="finalDiffVal" class="gold">Easy (3×3)</strong>
+          </div>
+        </div>
+
+        <div class="overlay-buttons">
+          <button id="playAgainBtn" class="game-action-btn start-pulse">
+            <span>🔄</span> Play Another Puzzle
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Instructions / Guide Box -->
+    <footer class="game-guide-box">
+      <div class="guide-item">
+        <span class="guide-tag">Controls</span>
+        <span><strong>Desktop:</strong> Drag and drop pieces, or click a piece then click its target slot. <strong>Mobile:</strong> Touch drag, or tap a piece then tap a board slot.</span>
+      </div>
+      <div class="guide-item">
+        <span class="guide-tag">Snapping</span>
+        <span>Correctly placed pieces automatically <strong>lock and snap</strong> into the board. Incorrect pieces return to the piece tray.</span>
+      </div>
+      <div class="guide-item">
+        <span class="guide-tag">Scoring</span>
+        <span>Scores reward higher difficulty levels, rapid completion time, and move accuracy. Beat your personal best!</span>
+      </div>
+    </footer>
+  </main>
+
+  <!-- Audio Engine & Game Script -->
+  <script src="../../js/audio.js"></script>
+  <script src="jigsaw-puzzle.js"></script>
+</body>
+</html>

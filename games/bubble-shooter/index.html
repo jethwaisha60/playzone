@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Bubble Shooter | PlayZone Arcade</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='14' fill='%230a0d14' stroke='%2300f0ff' stroke-width='2'/><circle cx='16' cy='16' r='8' fill='%23ec4899'/><circle cx='13' cy='13' r='3' fill='%23ffffff' opacity='0.8'/></svg>">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700;800&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
+
+  <!-- Core Theme & Game Styles -->
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="bubble-shooter.css">
+
+  <!-- Google AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1365345472330703" crossorigin="anonymous"></script>
+</head>
+<body class="bubble-page">
+
+  <!-- Background decorative light orbs -->
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
+
+  <!-- Top Navigation Header -->
+  <header class="game-header">
+    <div class="game-nav-container">
+      <a href="../../index.html" class="back-link" id="backToHome">
+        <span class="back-arrow">←</span>
+        <span class="back-label-full">Back to PlayZone</span>
+        <span class="back-label-short">Back</span>
+      </a>
+
+      <div class="game-title-wrap">
+        <span class="game-icon">🫧</span>
+        <h1 class="game-heading">Bubble <span class="gradient-text">Shooter</span></h1>
+      </div>
+
+      <!-- Header Action Controls -->
+      <div class="header-actions">
+        <button id="soundToggle" class="icon-btn" aria-label="Toggle sound" title="Toggle Sound">
+          <span id="soundIcon">🔊</span>
+          <span class="btn-label">Sound</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Game Stage -->
+  <main class="game-wrapper">
+
+    <!-- Difficulty & Level Selector Bar -->
+    <div class="settings-card">
+      <div class="settings-row">
+        <span class="setting-label">Difficulty:</span>
+        <div class="toggle-group" id="difficultySelector">
+          <button class="toggle-btn" data-diff="easy">🌱 Easy</button>
+          <button class="toggle-btn active" data-diff="medium">⚡ Medium</button>
+          <button class="toggle-btn" data-diff="hard">🔥 Hard</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Score & Stats Bar -->
+    <div class="scoreboard-card">
+      <div class="score-box">
+        <span class="score-label">Score</span>
+        <span class="score-number cyan" id="scoreDisplay">0</span>
+      </div>
+
+      <div class="score-divider"></div>
+
+      <div class="score-box">
+        <span class="score-label">Best Record</span>
+        <span class="score-number gold" id="bestScoreDisplay">0 pts</span>
+      </div>
+
+      <div class="score-divider"></div>
+
+      <div class="score-box">
+        <span class="score-label">Level</span>
+        <span class="score-number purple" id="levelDisplay">1</span>
+      </div>
+
+      <div class="score-divider"></div>
+
+      <!-- Shots / Misses Remaining before row drops -->
+      <div class="score-box misses-box">
+        <span class="score-label">Drop In</span>
+        <div class="misses-indicator" id="missesDisplay">
+          <!-- Rendered as dots/orbs -->
+          <span class="foul-dot active"></span>
+          <span class="foul-dot active"></span>
+          <span class="foul-dot active"></span>
+          <span class="foul-dot active"></span>
+          <span class="foul-dot active"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Canvas Frame with Interactive Overlays -->
+    <div class="canvas-container" id="canvasContainer">
+      <canvas id="gameCanvas" width="480" height="640"></canvas>
+
+      <!-- Overlay: Start Game Screen -->
+      <div class="canvas-overlay" id="startOverlay">
+        <div class="overlay-content">
+          <div class="overlay-icon">🫧</div>
+          <h2 class="overlay-title">Neon Bubble <span class="gradient-text">Shooter</span></h2>
+          <p class="overlay-desc">Aim, bounce off walls, and match 3 or more bubbles of the same color to clear the board!</p>
+          
+          <div class="rule-badges">
+            <span class="rule-badge">🎯 Aim & Shoot</span>
+            <span class="rule-badge">💥 Match 3+</span>
+            <span class="rule-badge">⚡ Chain Pops</span>
+          </div>
+
+          <button id="startGameBtn" class="game-action-btn start-pulse">
+            <span>▶</span> Start Game
+          </button>
+        </div>
+      </div>
+
+      <!-- Overlay: Pause Screen -->
+      <div class="canvas-overlay hidden" id="pauseOverlay">
+        <div class="overlay-content">
+          <div class="overlay-icon">⏸️</div>
+          <h2 class="overlay-title">Game Paused</h2>
+          <p class="overlay-desc">Catch your breath. The bubble matrix is frozen.</p>
+          <button id="resumeBtn" class="game-action-btn">
+            <span>▶</span> Resume Game
+          </button>
+        </div>
+      </div>
+
+      <!-- Overlay: Game Over Screen -->
+      <div class="canvas-overlay hidden" id="gameOverOverlay">
+        <div class="overlay-content">
+          <div class="overlay-icon">💥</div>
+          <h2 class="overlay-title">Game <span class="gradient-text red-grad">Over</span></h2>
+          <p class="overlay-desc" id="gameOverReason">Bubbles breached the danger line!</p>
+
+          <div class="final-score-box">
+            <span class="f-label">FINAL SCORE</span>
+            <span class="f-score" id="finalScoreVal">0 pts</span>
+          </div>
+
+          <div id="newBestBadge" class="new-record-badge hidden">
+            ✨ New Personal Best! ✨
+          </div>
+
+          <div class="modal-stats-grid">
+            <div class="modal-stat-item">
+              <span class="m-label">Best Record</span>
+              <strong id="finalBestVal" class="purple">0 pts</strong>
+            </div>
+            <div class="modal-stat-item">
+              <span class="m-label">Bubbles Popped</span>
+              <strong id="finalPoppedVal" class="cyan">0</strong>
+            </div>
+            <div class="modal-stat-item">
+              <span class="m-label">Level Reached</span>
+              <strong id="finalLevelVal" class="gold">1</strong>
+            </div>
+            <div class="modal-stat-item">
+              <span class="m-label">Chain Drops</span>
+              <strong id="finalDropsVal" class="emerald">0</strong>
+            </div>
+          </div>
+
+          <button id="playAgainBtn" class="game-action-btn start-pulse">
+            <span>🔄</span> Play Again
+          </button>
+        </div>
+      </div>
+
+      <!-- Overlay: Victory / Level Complete Screen -->
+      <div class="canvas-overlay hidden" id="winOverlay">
+        <div class="overlay-content">
+          <div class="overlay-icon">🏆</div>
+          <h2 class="overlay-title">Board <span class="gradient-text">Cleared!</span></h2>
+          <p class="overlay-desc">Magnificent shot accuracy! All bubbles have been popped.</p>
+
+          <div class="final-score-box">
+            <span class="f-label">TOTAL SCORE</span>
+            <span class="f-score" id="winScoreVal">0 pts</span>
+          </div>
+
+          <div class="modal-stats-grid">
+            <div class="modal-stat-item">
+              <span class="m-label">Clear Bonus</span>
+              <strong class="emerald">+500 pts</strong>
+            </div>
+            <div class="modal-stat-item">
+              <span class="m-label">Level</span>
+              <strong id="winLevelVal" class="gold">1</strong>
+            </div>
+          </div>
+
+          <div class="overlay-buttons">
+            <button id="nextLevelBtn" class="game-action-btn start-pulse">
+              <span>⚡</span> Next Wave
+            </button>
+            <button id="winRestartBtn" class="game-action-btn secondary-btn">
+              <span>🔄</span> Restart
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- In-Game Controls Bar -->
+    <div class="game-controls-bar">
+      <!-- Next Bubble Preview Indicator -->
+      <div class="preview-bubble-box" title="Next bubble in launcher">
+        <span class="preview-label">NEXT:</span>
+        <canvas id="nextBubbleCanvas" width="36" height="36"></canvas>
+      </div>
+
+      <button id="pauseToggleBtn" class="control-btn" title="Pause / Resume Game">
+        <span id="pauseBtnIcon">⏸️</span>
+        <span id="pauseBtnLabel">Pause</span>
+      </button>
+
+      <button id="restartBtn" class="control-btn" title="Restart Game">
+        <span>🔄</span>
+        <span>Restart</span>
+      </button>
+
+      <!-- Swap Bubble Button -->
+      <button id="swapBubbleBtn" class="control-btn" title="Swap Current & Next Bubble">
+        <span>🔁</span>
+        <span>Swap</span>
+      </button>
+    </div>
+
+    <!-- Instructions / Guide Box -->
+    <footer class="game-guide-box">
+      <div class="guide-item">
+        <span class="guide-tag">Aim & Shoot</span>
+        <span><strong>Desktop:</strong> Move mouse to aim with the guide line; click to fire. <strong>Mobile:</strong> Touch & drag to aim, release to shoot.</span>
+      </div>
+      <div class="guide-item">
+        <span class="guide-tag">Matching</span>
+        <span>Match <strong>3 or more</strong> bubbles of identical color to pop them (+10 pts each). Any bubbles cut off from the ceiling drop for <strong>+20 pts</strong> bonus!</span>
+      </div>
+      <div class="guide-item">
+        <span class="guide-tag">Danger Line</span>
+        <span>Watch the <strong>Drop In</strong> counter! Each miss reduces the counter. When it reaches 0, a new row drops. Don't let bubbles cross the bottom red danger line!</span>
+      </div>
+    </footer>
+
+  </main>
+
+  <!-- Audio Engine & Game Script -->
+  <script src="../../js/audio.js"></script>
+  <script src="bubble-shooter.js"></script>
+</body>
+</html>
