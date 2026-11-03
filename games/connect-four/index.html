@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Connect Four | PlayZone Arcade</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%230a0d14'/><path d='M9 13h14a5 5 0 0 1 5 5v2a3 3 0 0 1-5 2l-3-4h-8l-3 4a3 3 0 0 1-5-2v-2a5 5 0 0 1 5-5z' fill='%23121724' stroke='%2300f0ff' stroke-width='1.5'/><circle cx='21' cy='17' r='1' fill='%23ec4899'/><circle cx='24' cy='17' r='1' fill='%23a855f7'/><path d='M8 17h4m-2-2v4' stroke='%2300f0ff' stroke-width='1.2' stroke-linecap='round'/></svg>">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700;800&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
+
+  <!-- Core Theme & Game Styles -->
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="connect-four.css">
+
+  <!-- Google AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1365345472330703" crossorigin="anonymous"></script>
+</head>
+<body class="c4-page">
+
+  <!-- Background decorative light orbs -->
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
+
+  <!-- Top Navigation Header -->
+  <header class="game-header">
+    <div class="game-nav-container">
+      <a href="../../index.html" class="back-link" id="backToHome">
+        <span class="back-arrow">←</span>
+        <span class="back-label-full">Back to PlayZone</span>
+        <span class="back-label-short">Back</span>
+      </a>
+
+      <div class="game-title-wrap">
+        <span class="game-icon">🔴</span>
+        <h1 class="game-heading">Connect <span class="gradient-text">Four</span></h1>
+      </div>
+
+      <!-- In-game Sound Toggle -->
+      <button id="soundToggle" class="icon-btn" aria-label="Toggle sound" title="Toggle Sound">
+        <span id="soundIcon">🔊</span>
+        <span class="btn-label">Sound</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Game Stage -->
+  <main class="game-wrapper">
+
+    <!-- Settings Card (Game Mode & Difficulty) -->
+    <div class="settings-card">
+      <!-- Mode Toggle -->
+      <div class="settings-row">
+        <span class="setting-label">Mode:</span>
+        <div class="toggle-group" id="modeSelector">
+          <button class="toggle-btn active" data-mode="ai">🤖 vs Computer</button>
+          <button class="toggle-btn" data-mode="pvp">👥 2 Players</button>
+        </div>
+      </div>
+
+      <!-- AI Difficulty (visible in vs Computer mode) -->
+      <div class="settings-row" id="difficultyRow">
+        <span class="setting-label">AI Level:</span>
+        <div class="toggle-group" id="difficultySelector">
+          <button class="toggle-btn" data-diff="easy">🌱 Easy</button>
+          <button class="toggle-btn active" data-diff="medium">⚡ Medium</button>
+          <button class="toggle-btn" data-diff="hard">🔥 Hard (Minimax)</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Active Turn / Status Banner -->
+    <div class="status-banner" id="statusBanner">
+      <div class="turn-disc-indicator" id="turnDisc"></div>
+      <span class="status-text" id="statusText">Player 1's Turn</span>
+    </div>
+
+    <!-- Scoreboard Card -->
+    <div class="scoreboard-card">
+      <div class="score-box">
+        <span class="score-label" id="p1ScoreLabel">Player 1 (Cyan)</span>
+        <span class="score-number cyan" id="p1ScoreDisplay">0</span>
+      </div>
+
+      <div class="score-divider"></div>
+
+      <div class="score-box">
+        <span class="score-label">Draws</span>
+        <span class="score-number gold" id="drawsScoreDisplay">0</span>
+      </div>
+
+      <div class="score-divider"></div>
+
+      <div class="score-box">
+        <span class="score-label" id="p2ScoreLabel">Computer (Pink)</span>
+        <span class="score-number pink" id="p2ScoreDisplay">0</span>
+      </div>
+
+      <div class="score-divider"></div>
+
+      <div class="score-box">
+        <span class="score-label">Moves</span>
+        <span class="score-number purple" id="moveCountDisplay">0</span>
+      </div>
+    </div>
+
+    <!-- Connect Four Board Frame -->
+    <div class="board-frame" id="boardFrame">
+      <!-- Drop Column Indicators (Arrows above columns) -->
+      <div class="drop-indicators" id="dropIndicators">
+        <button class="drop-col-btn" data-col="0" aria-label="Drop in column 1">▼</button>
+        <button class="drop-col-btn" data-col="1" aria-label="Drop in column 2">▼</button>
+        <button class="drop-col-btn" data-col="2" aria-label="Drop in column 3">▼</button>
+        <button class="drop-col-btn" data-col="3" aria-label="Drop in column 4">▼</button>
+        <button class="drop-col-btn" data-col="4" aria-label="Drop in column 5">▼</button>
+        <button class="drop-col-btn" data-col="5" aria-label="Drop in column 6">▼</button>
+        <button class="drop-col-btn" data-col="6" aria-label="Drop in column 7">▼</button>
+      </div>
+
+      <!-- 7 Columns x 6 Rows Board Container -->
+      <div class="board-grid" id="boardGrid" role="grid" aria-label="Connect Four Grid">
+        <!-- 42 slots rendered dynamically by JS -->
+      </div>
+    </div>
+
+    <!-- Controls Bar -->
+    <div class="game-controls-bar">
+      <button id="newRoundBtn" class="control-btn" title="Start a fresh round">
+        <span>🔄</span>
+        <span>New Round</span>
+      </button>
+      <button id="undoBtn" class="control-btn" title="Undo the previous move" disabled>
+        <span>↩️</span>
+        <span>Undo</span>
+      </button>
+      <button id="resetScoreBtn" class="control-btn secondary-control" title="Clear all scoreboard win tallies">
+        <span>🧹</span>
+        <span>Reset Record</span>
+      </button>
+    </div>
+
+    <!-- Win / Result Modal Overlay -->
+    <div class="game-overlay hidden" id="resultOverlay">
+      <div class="overlay-card">
+        <div class="overlay-icon" id="resultIcon">🏆</div>
+        <h2 class="overlay-title" id="resultTitle">Victory!</h2>
+        <p class="overlay-desc" id="resultMessage">Player 1 connected four discs in a row!</p>
+
+        <div class="result-highlight-badge" id="resultBadge">
+          ✨ Four Connected! ✨
+        </div>
+
+        <div class="modal-stats-grid">
+          <div class="modal-stat-item">
+            <span class="m-label">Winner</span>
+            <strong id="modalWinnerVal" class="cyan">Player 1</strong>
+          </div>
+          <div class="modal-stat-item">
+            <span class="m-label">Total Moves</span>
+            <strong id="modalMovesVal" class="purple">16</strong>
+          </div>
+          <div class="modal-stat-item">
+            <span class="m-label">P1 Wins</span>
+            <strong id="modalP1WinsVal" class="cyan">0</strong>
+          </div>
+          <div class="modal-stat-item">
+            <span class="m-label">P2 / AI Wins</span>
+            <strong id="modalP2WinsVal" class="pink">0</strong>
+          </div>
+        </div>
+
+        <div class="overlay-buttons">
+          <button id="playAgainBtn" class="game-action-btn start-pulse">
+            <span>🔄</span> Play Next Round
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Instructions / Guide Box -->
+    <footer class="game-guide-box">
+      <div class="guide-item">
+        <span class="guide-tag">How to Play</span>
+        <span>Take turns dropping colored discs into any of the 7 columns. Discs fall down to the lowest open slot.</span>
+      </div>
+      <div class="guide-item">
+        <span class="guide-tag">Objective</span>
+        <span>Be the first to connect <strong>4 discs in a row</strong> horizontally, vertically, or diagonally.</span>
+      </div>
+      <div class="guide-item">
+        <span class="guide-tag">Game Modes</span>
+        <span>Test your strategy against the <strong>Computer AI</strong> (Easy, Medium, Hard Minimax) or play locally in <strong>2-Player Mode</strong>.</span>
+      </div>
+    </footer>
+  </main>
+
+  <!-- Audio Engine & Game Script -->
+  <script src="../../js/audio.js"></script>
+  <script src="connect-four.js"></script>
+</body>
+</html>

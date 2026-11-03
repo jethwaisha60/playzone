@@ -136,6 +136,18 @@ const GAMES_CATALOG = [
     scoreKey: 'playzone_score_flappy',
     scoreUnit: 'pts',
     path: 'games/flappy/index.html'
+  },
+  {
+    id: 'connect-four',
+    title: 'Connect Four',
+    category: 'puzzle',
+    badge: 'Strategy',
+    difficulty: 'Medium',
+    icon: '🔴',
+    description: 'Drop colored discs, align four in a row, and outsmart your opponent or the AI.',
+    scoreKey: 'playzone_score_connect_four',
+    scoreUnit: 'wins',
+    path: 'games/connect-four/index.html'
   }
 ];
 
