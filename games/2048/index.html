@@ -3,7 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>2048 Puzzle | PlayZone Arcade</title>
+  <title>Play 2048 Game Online Free | PlayZone</title>
+  <meta name="description" content="Play 2048 puzzle game online for free on PlayZone. Slide and merge numbered tiles on a neon cyber grid to reach the legendary 2048 tile and beyond.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://playzone-mauve-ten.vercel.app/games/2048/">
 
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%230a0d14'/><path d='M9 13h14a5 5 0 0 1 5 5v2a3 3 0 0 1-5 2l-3-4h-8l-3 4a3 3 0 0 1-5-2v-2a5 5 0 0 1 5-5z' fill='%23121724' stroke='%2300f0ff' stroke-width='1.5'/><circle cx='21' cy='17' r='1' fill='%23ec4899'/><circle cx='24' cy='17' r='1' fill='%23a855f7'/><path d='M8 17h4m-2-2v4' stroke='%2300f0ff' stroke-width='1.2' stroke-linecap='round'/></svg>">
@@ -35,7 +38,7 @@
       </a>
 
       <div class="game-title-wrap">
-        <span class="game-icon">🔢</span>
+        <span class="game-icon">2️⃣</span>
         <h1 class="game-heading">2048 <span class="gradient-text">Puzzle</span></h1>
       </div>
 
@@ -196,6 +199,57 @@
         <span><strong>Swipe</strong> anywhere on the grid or tap the <strong>Direction Pad</strong> below.</span>
       </div>
     </footer>
+    <!-- SEO & Game Guide Section -->
+    <section class="game-seo-section">
+      <h2>About 2048 Puzzle</h2>
+      <p>2048 Puzzle is an addictive sliding-tile brain teaser rendered in PlayZone's signature dark neon aesthetic. Starting with modest 2 and 4 tiles, players strategically shift the entire 4×4 cyber-grid to collide matching numbers, compounding values exponentially until fusing the fabled 2048 block.</p>
+
+      <h2>How to Play</h2>
+      <p>Shift all tiles on the board simultaneously by swiping or pressing direction keys. When two tiles carrying identical numbers collide, they merge into a single tile displaying their sum (e.g., 2 + 2 = 4, 4 + 4 = 8). Every shift spawns a fresh tile in an open slot. Plan ahead to keep space available before the board becomes hopelessly locked.</p>
+
+      <h2>Game Controls</h2>
+      <div class="seo-controls-grid">
+        <div class="seo-control-card">
+          <h3>Desktop (Keyboard)</h3>
+          <ul>
+            <li><strong>Arrow Keys / W, A, S, D:</strong> Slide all board tiles Up, Down, Left, or Right</li>
+            <li><strong>Undo Button (↩️):</strong> Revert your previous move if you make a mistake</li>
+            <li><strong>New Game:</strong> Re-shuffle and initialize a fresh board</li>
+          </ul>
+        </div>
+        <div class="seo-control-card">
+          <h3>Mobile & Touch</h3>
+          <ul>
+            <li><strong>Swipe Gestures:</strong> Swipe your finger anywhere across the 4×4 grid</li>
+            <li><strong>Virtual D-Pad:</strong> Tap directional buttons below the board for precise input</li>
+            <li><strong>Touch Actions:</strong> Big touch targets for Undo and New Game controls</li>
+          </ul>
+        </div>
+      </div>
+
+      <h2>Gameplay Tips & Strategy</h2>
+      <ul class="seo-tips-list">
+        <li><strong>Corner Anchor Method:</strong> Choose one corner (such as bottom-right) and keep your highest-value tile locked there permanently throughout the run.</li>
+        <li><strong>Monotonic Rows:</strong> Build descending chains of values along your anchor row (e.g., 512, 256, 128, 64) to trigger satisfying cascade mergers.</li>
+        <li><strong>Avoid Swiping the Opposite Way:</strong> If anchoring in the bottom row, never press Up unless forced by zero available lateral moves.</li>
+      </ul>
+
+      <h2>Frequently Asked Questions</h2>
+      <div class="seo-faq-list">
+        <div class="seo-faq-item">
+          <h3>Can I continue playing after achieving the 2048 tile?</h3>
+          <p>Yes. Upon reaching 2048, a victory overlay appears offering a "Keep Playing" mode, allowing you to chase 4096, 8192, and record-shattering high scores.</p>
+        </div>
+        <div class="seo-faq-item">
+          <h3>How does the Undo feature work?</h3>
+          <p>The Undo button restores the board layout and score from the exact state prior to your latest shift, providing a helpful safety net for misclicks.</p>
+        </div>
+        <div class="seo-faq-item">
+          <h3>Is my high score preserved between visits?</h3>
+          <p>Yes. Your all-time highest score is automatically committed to your browser's local storage and displayed alongside your current live score.</p>
+        </div>
+      </div>
+    </section>
   </main>
 
   <!-- Audio Engine & Game Script -->

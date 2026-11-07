@@ -59,7 +59,7 @@ const GAMES_CATALOG = [
     category: 'puzzle',
     badge: 'Logic',
     difficulty: 'Medium',
-    icon: '🔢',
+    icon: '2️⃣',
     description: 'Slide numbered tiles, merge matching numbers, and reach the 2048 tile in this addictive puzzle challenge.',
     scoreKey: 'playzone_score_2048',
     scoreUnit: 'pts',
